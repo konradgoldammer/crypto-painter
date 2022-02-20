@@ -12,6 +12,7 @@
   "author": "Konrad Goldammer",
   "license": "ISC",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0",
     "path": "^0.12.7"
   }
 }
