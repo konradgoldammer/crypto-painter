@@ -16,15 +16,17 @@ const MainNavbar = ({ account, setAccount }) => {
       return;
     }
 
-    console.log("pre it");
     const accounts = await window.ethereum
       .request({
         method: "eth_requestAccounts",
       })
       .catch((error) => {
         setBtnDisabled(false);
-        return;
       });
+
+    if (!accounts) {
+      return;
+    }
 
     window.web3 = new Web3(window.ethereum);
 
