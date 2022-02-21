@@ -7,12 +7,17 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "npm start --prefix client"
+    "client-install": "npm install --prefix client",
+    "server-install": "npm install --prefix server",
+    "client": " npm start --prefix client",
+    "server": " npm start --prefix server",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run client\""
   },
   "author": "Konrad Goldammer",
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
+    "concurrently": "^7.0.0",
     "path": "^0.12.7"
   }
 }
