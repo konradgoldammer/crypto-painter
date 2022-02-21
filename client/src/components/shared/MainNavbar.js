@@ -51,8 +51,6 @@ const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
         }),
     ]);
 
-    console.log(timedOut);
-
     if (timedOut) {
       setAlert(
         "If the MetaMask pop-up hasn't shown up, open the MetaMask extension manually over your browser and complete the login"
