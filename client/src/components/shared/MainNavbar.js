@@ -4,7 +4,7 @@ import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 
-const MainNavbar = ({ account, setAccount }) => {
+const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
   const [btnDisabled, setBtnDisabled] = useState(false);
 
   const enableEth = async () => {
@@ -12,17 +12,37 @@ const MainNavbar = ({ account, setAccount }) => {
 
     if (!window.ethereum) {
       setBtnDisabled(false);
-      alert("You need to install MetaMask first");
+      setAlert(
+        "You need to install MetaMask first 🦊 If you don't know what MetaMask is, I recommend you watch this video https://www.youtube.com/watch?v=YVgfHZMFFFQ"
+      );
+      setShowAlert(true);
       return;
     }
+
+    const timeout = new Promise((resolve) =>
+      setTimeout(() => resolve("timed out"), 15000)
+    );
+
+    timeout.then(() => {
+      setAlert(
+        "If the MetaMask pop-up hasn't shown up, open the MetaMask extension manually over your browser and complete the login"
+      );
+      setShowAlert(true);
+      setBtnDisabled(false);
+    });
 
     const accounts = await window.ethereum
       .request({
         method: "eth_requestAccounts",
       })
       .catch((error) => {
+        setAlert(null);
+        setShowAlert(false);
         setBtnDisabled(false);
       });
+
+    setAlert(null);
+    setShowAlert(false);
 
     if (!accounts) {
       return;
@@ -62,7 +82,9 @@ const MainNavbar = ({ account, setAccount }) => {
 
 MainNavbar.propTypes = {
   account: PropTypes.string,
-  setAccount: PropTypes.func,
+  setAccount: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  setShowAlert: PropTypes.func.isRequired,
 };
 
 export default MainNavbar;

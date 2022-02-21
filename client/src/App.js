@@ -15,7 +15,15 @@ const App = () => {
 
       const web3 = new Web3(window.ethereum);
 
-      const accounts = await web3.eth.getAccounts();
+      const accounts = await Promise.race([
+        web3.eth.getAccounts(),
+        new Promise((resolve) => setTimeout(() => resolve("timed out"), 10000)),
+      ]);
+
+      if (typeof accounts === "string") {
+        window.location.reload();
+        return;
+      }
 
       if (accounts.length === 0) {
         return;
