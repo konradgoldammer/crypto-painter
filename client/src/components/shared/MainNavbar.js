@@ -2,60 +2,63 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import { Link } from "react-router-dom";
+import loading from "../../assets/loading.gif";
 import Web3 from "web3";
 
 const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
-  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const enableEth = async () => {
-    setBtnDisabled(true);
+    setIsConnecting(true);
 
     if (!window.ethereum) {
-      setBtnDisabled(false);
       setAlert(
         "You need to install MetaMask first 🦊 If you don't know what MetaMask is, I recommend you watch this video https://www.youtube.com/watch?v=YVgfHZMFFFQ"
       );
       setShowAlert(true);
+      setIsConnecting(false);
       return;
     }
 
-    const timeout = new Promise((resolve) =>
-      setTimeout(() => resolve("timed out"), 15000)
-    );
+    const timedOut = await Promise.race([
+      new Promise((resolve) => setTimeout(() => resolve("timed out"), 15000)),
+      window.ethereum
+        .request({
+          method: "eth_requestAccounts",
+        })
+        .catch((error) => {
+          setAlert(null);
+          setShowAlert(false);
+          setIsConnecting(false);
+        })
+        .then((accounts) => {
+          setAlert(null);
+          setShowAlert(false);
 
-    timeout.then(() => {
+          if (!accounts) {
+            setIsConnecting(false);
+            return;
+          }
+
+          window.web3 = new Web3(window.ethereum);
+
+          window.ethereum.on("accountsChanged", function (accounts) {
+            setAccount(accounts[0]);
+          });
+
+          setAccount(accounts[0]);
+          setIsConnecting(false);
+        }),
+    ]);
+
+    console.log(timedOut);
+
+    if (timedOut) {
       setAlert(
         "If the MetaMask pop-up hasn't shown up, open the MetaMask extension manually over your browser and complete the login"
       );
       setShowAlert(true);
-      setBtnDisabled(false);
-    });
-
-    const accounts = await window.ethereum
-      .request({
-        method: "eth_requestAccounts",
-      })
-      .catch((error) => {
-        setAlert(null);
-        setShowAlert(false);
-        setBtnDisabled(false);
-      });
-
-    setAlert(null);
-    setShowAlert(false);
-
-    if (!accounts) {
-      return;
     }
-
-    window.web3 = new Web3(window.ethereum);
-
-    window.ethereum.on("accountsChanged", function (accounts) {
-      setAccount(accounts[0]);
-    });
-
-    setAccount(accounts[0]);
-    setBtnDisabled(false);
   };
 
   return (
@@ -67,13 +70,23 @@ const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
         {account ? (
           <NavbarText>{account}</NavbarText>
         ) : (
-          <button
-            className="btn btn-primary"
-            onClick={enableEth}
-            disabled={btnDisabled}
-          >
-            Connect to Wallet
-          </button>
+          <div>
+            <button
+              className="btn btn-primary"
+              onClick={enableEth}
+              disabled={isConnecting}
+            >
+              Connect to Wallet
+            </button>
+            {isConnecting && (
+              <img
+                src={loading}
+                alt="connecting..."
+                title="connecting..."
+                className="ms-2 loading"
+              />
+            )}
+          </div>
         )}
       </div>
     </Navbar>
