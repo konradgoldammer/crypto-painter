@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import MainNavbar from "../shared/MainNavbar";
 import Alert from "../shared/Alert";
+import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
+import { io } from "socket.io-client";
 
 const Home = ({ title, account, setAccount }) => {
   useEffect(() => {
@@ -10,8 +12,14 @@ const Home = ({ title, account, setAccount }) => {
     document.title = title;
   }, [title]);
 
+  useEffect(() => {
+    // Connect with server through socket.io
+    const socket = io("http://localhost:5000"); // Add to dotenv maybe
+  }, []);
+
   const [alert, setAlert] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [isUpdatingCanvas, setIsUpdatingCanvas] = useState(true);
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
@@ -55,7 +63,11 @@ const Home = ({ title, account, setAccount }) => {
   };
 
   const showNotAllowedAlert = () => {
-    setAlert("You need to connect your wallet before you can draw 🤬");
+    if (isUpdatingCanvas) {
+      return;
+    }
+    let alertMsg = "You need to connect your wallet before you can draw 🤬";
+    setAlert(alertMsg);
     setShowAlert(true);
   };
 
@@ -75,15 +87,27 @@ const Home = ({ title, account, setAccount }) => {
       />
       <div className="draw-container mx-auto">
         <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
-        <canvas
-          onMouseDown={account ? startDrawing : showNotAllowedAlert}
-          onMouseUp={account ? endDrawing : null}
-          onMouseMove={account ? draw : null}
-          ref={canvasRef}
-          width={`720px`}
-          height={`576px`}
-          className="draw-area bg-white border border-secondary border-3"
-        />
+        <div className="position-relative">
+          <canvas
+            onMouseDown={
+              account && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
+            }
+            onMouseUp={account && !isUpdatingCanvas ? endDrawing : null}
+            onMouseMove={account && !isUpdatingCanvas ? draw : null}
+            ref={canvasRef}
+            width={`720px`}
+            height={`576px`}
+            className="draw-area bg-white border border-secondary border-3"
+          />
+          {isUpdatingCanvas && (
+            <img
+              src={loading}
+              alt="connecting..."
+              title="connecting..."
+              className="loading center"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

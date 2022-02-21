@@ -1,6 +1,6 @@
 const config = require("config");
 
-const port = config.get("port") || 3000;
+const port = config.get("port") || 5000;
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 
 const image = {};
