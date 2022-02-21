@@ -1,7 +1,7 @@
 import "./css/style.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/Home/index.js";
 import Web3 from "web3";
 
 const App = () => {

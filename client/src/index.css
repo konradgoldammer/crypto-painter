@@ -16,3 +16,13 @@ code {
   width: 32px;
   height: 32px;
 }
+
+.draw-container {
+  width: 720px;
+}
+
+.draw-area {
+  width: 720px;
+  height: 576px;
+  vertical-align: bottom;
+}
