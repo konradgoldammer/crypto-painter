@@ -15,6 +15,7 @@ io.on("connection", (socket) => {
     image.strokes.push(newStroke);
     callback();
 
+    // Send strokes to others
     socket.broadcast.emit("stroke", newStroke);
   });
 });
