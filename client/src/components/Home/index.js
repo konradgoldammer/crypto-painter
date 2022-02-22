@@ -12,22 +12,43 @@ const Home = ({ title, account, setAccount }) => {
     document.title = title;
   }, [title]);
 
+  const [socket, setSocket] = useState(null);
+
   useEffect(() => {
     // Connect with server through socket.io
     const socket = io("http://localhost:5000"); // Add to dotenv maybe
+    setSocket(socket);
+
+    // Get image obj
+    socket.on("image", (image) => {
+      console.log("Loading image...");
+      image.strokes.forEach((stroke) => drawStroke(stroke));
+      setIsUpdatingCanvas(false);
+    });
+
+    // Wait for new strokes from others
+    socket.on("stroke", (stroke) => {
+      console.log("new stroke");
+      drawStroke(stroke);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [alert, setAlert] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [isUpdatingCanvas, setIsUpdatingCanvas] = useState(true);
+  const [isWaitingForServer, setIsWaitingForServer] = useState(false);
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [lineWidth, setLineWidth] = useState(5);
-  const [lineColor, setLineColor] = useState("black");
+  const [lineColor, setLineColor] = useState("#000000"); // black
 
-  useEffect(() => {
+  const [currentStroke, setCurrentStroke] = useState(null);
+
+  const resetCanvasStyle = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.lineCap = "round";
@@ -36,21 +57,36 @@ const Home = ({ title, account, setAccount }) => {
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = lineWidth;
     ctxRef.current = ctx;
+  };
+
+  useEffect(() => {
+    resetCanvasStyle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineColor, lineWidth]);
 
   // Function for starting the drawing
   const startDrawing = (e) => {
-    console.log("Start drawing");
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     setIsDrawing(true);
+
+    setCurrentStroke({
+      color: lineColor,
+      size: lineWidth,
+      points: [{ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }],
+    });
   };
 
   // Function for ending the drawing
   const endDrawing = () => {
-    console.log("End drawing");
     ctxRef.current.closePath();
     setIsDrawing(false);
+
+    // Send stroke to server socket
+    setIsWaitingForServer(true);
+    socket.emit("stroke", currentStroke, () => {
+      setIsWaitingForServer(false);
+    });
   };
 
   const draw = (e) => {
@@ -60,6 +96,38 @@ const Home = ({ title, account, setAccount }) => {
     ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
 
     ctxRef.current.stroke();
+
+    setCurrentStroke({
+      ...currentStroke,
+      points: [
+        ...currentStroke.points,
+        { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY },
+      ],
+    });
+  };
+
+  const drawStroke = (stroke) => {
+    // Configure style
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+    ctxRef.current = ctx;
+
+    // Draw
+    ctxRef.current.beginPath();
+    stroke.points.forEach((point, index) => {
+      if (index === 0) {
+        ctxRef.current.moveTo(point.x, point.y);
+        return;
+      }
+      ctxRef.current.lineTo(point.x, point.y);
+      ctxRef.current.stroke();
+    });
+    ctxRef.current.closePath();
+
+    // Reset style
+    resetCanvasStyle();
   };
 
   const showNotAllowedAlert = () => {
@@ -92,8 +160,14 @@ const Home = ({ title, account, setAccount }) => {
             onMouseDown={
               account && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
             }
-            onMouseUp={account && !isUpdatingCanvas ? endDrawing : null}
-            onMouseMove={account && !isUpdatingCanvas ? draw : null}
+            onMouseUp={
+              account && !isUpdatingCanvas && !isWaitingForServer
+                ? endDrawing
+                : null
+            }
+            onMouseMove={
+              account && !isUpdatingCanvas && !isWaitingForServer ? draw : null
+            }
             ref={canvasRef}
             width={`720px`}
             height={`576px`}
