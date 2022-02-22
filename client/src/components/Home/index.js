@@ -79,6 +79,10 @@ const Home = ({ title, account, setAccount }) => {
 
   // Function for ending the drawing
   const endDrawing = () => {
+    if (!isDrawing) {
+      return;
+    }
+
     ctxRef.current.closePath();
     setIsDrawing(false);
 
@@ -167,6 +171,11 @@ const Home = ({ title, account, setAccount }) => {
             }
             onMouseMove={
               account && !isUpdatingCanvas && !isWaitingForServer ? draw : null
+            }
+            onMouseOut={
+              account && !isUpdatingCanvas && !isWaitingForServer
+                ? endDrawing
+                : null
             }
             ref={canvasRef}
             width={`720px`}
