@@ -3,9 +3,17 @@ import PropTypes from "prop-types";
 import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";
+import { signMsg } from "../../constants.js";
 import Web3 from "web3";
+import Web3Token from "web3-token";
 
-const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
+const MainNavbar = ({
+  account,
+  setAccount,
+  setAlert,
+  setShowAlert,
+  setToken,
+}) => {
   const [isConnecting, setIsConnecting] = useState(false);
 
   const enableEth = async () => {
@@ -40,14 +48,43 @@ const MainNavbar = ({ account, setAccount, setAlert, setShowAlert }) => {
             return;
           }
 
-          window.web3 = new Web3(window.ethereum);
-
-          window.ethereum.on("accountsChanged", function (accounts) {
-            setAccount(accounts[0]);
-          });
+          const web3 = new Web3(window.ethereum);
+          window.web3 = web3;
 
           setAccount(accounts[0]);
-          setIsConnecting(false);
+
+          window.ethereum.on("accountsChanged", function (accounts) {
+            setToken(null);
+
+            if (accounts.length === 0) {
+              setAccount(null);
+              localStorage.removeItem("token");
+              return;
+            }
+
+            setAccount(accounts[0]);
+
+            Web3Token.sign((msg) =>
+              web3.eth.personal.sign(msg, accounts[0], signMsg)
+            )
+              .then((token) => {
+                setToken(token);
+                localStorage.setItem("token", token);
+              })
+              .catch(() => {});
+          });
+
+          Web3Token.sign((msg) =>
+            web3.eth.personal.sign(msg, accounts[0], signMsg)
+          )
+            .then((token) => {
+              setToken(token);
+              localStorage.setItem("token", token);
+              setIsConnecting(false);
+            })
+            .catch(() => {
+              setIsConnecting(false);
+            });
         }),
     ]);
 
@@ -96,6 +133,7 @@ MainNavbar.propTypes = {
   setAccount: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   setShowAlert: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
 };
 
 export default MainNavbar;

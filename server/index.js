@@ -1,4 +1,5 @@
 const config = require("config");
+const Web3Token = require("web3-token");
 
 const port = config.get("port") || 5000;
 const io = require("socket.io")(port, { cors: { origin: "*" } });

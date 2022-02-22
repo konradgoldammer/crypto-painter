@@ -5,8 +5,10 @@ import Alert from "../shared/Alert";
 import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
 import { io } from "socket.io-client";
+import { signMsg } from "../../constants.js";
+import Web3Token from "web3-token";
 
-const Home = ({ title, account, setAccount }) => {
+const Home = ({ title, account, setAccount, token, setToken }) => {
   useEffect(() => {
     // Set page title
     document.title = title;
@@ -139,12 +141,27 @@ const Home = ({ title, account, setAccount }) => {
   };
 
   const showNotAllowedAlert = () => {
-    if (isUpdatingCanvas) {
+    if (isUpdatingCanvas || isWaitingForServer) {
       return;
     }
-    let alertMsg = "You need to connect your wallet before you can draw 🤬";
-    setAlert(alertMsg);
-    setShowAlert(true);
+
+    let alertMsg;
+
+    if (!account) {
+      alertMsg = "You need to connect your wallet before you can draw 🤬";
+      setAlert(alertMsg);
+      setShowAlert(true);
+      return;
+    }
+
+    Web3Token.sign((msg) =>
+      window.web3.eth.personal.sign(msg, account, signMsg)
+    )
+      .then((token) => {
+        setToken(token);
+        localStorage.setItem("token", token);
+      })
+      .catch(() => {});
   };
 
   return (
@@ -154,6 +171,7 @@ const Home = ({ title, account, setAccount }) => {
         setAccount={setAccount}
         setAlert={setAlert}
         setShowAlert={setShowAlert}
+        setToken={setToken}
       />
       <Alert
         content={alert}
@@ -166,18 +184,18 @@ const Home = ({ title, account, setAccount }) => {
         <div className="position-relative">
           <canvas
             onMouseDown={
-              account && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
+              token && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
             }
             onMouseUp={
-              account && !isUpdatingCanvas && !isWaitingForServer
+              token && !isUpdatingCanvas && !isWaitingForServer
                 ? endDrawing
                 : null
             }
             onMouseMove={
-              account && !isUpdatingCanvas && !isWaitingForServer ? draw : null
+              token && !isUpdatingCanvas && !isWaitingForServer ? draw : null
             }
             onMouseOut={
-              account && !isUpdatingCanvas && !isWaitingForServer
+              token && !isUpdatingCanvas && !isWaitingForServer
                 ? endDrawing
                 : null
             }
@@ -203,7 +221,9 @@ const Home = ({ title, account, setAccount }) => {
 Home.propTypes = {
   title: PropTypes.string,
   account: PropTypes.string,
-  setAccount: PropTypes.func,
+  setAccount: PropTypes.func.isRequired,
+  token: PropTypes.string,
+  setToken: PropTypes.func.isRequired,
 };
 
 export default Home;

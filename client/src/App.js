@@ -2,10 +2,13 @@ import "./css/style.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/index.js";
+import { signMsg } from "./constants.js";
 import Web3 from "web3";
+import Web3Token from "web3-token";
 
 const App = () => {
   const [account, setAccount] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -31,11 +34,64 @@ const App = () => {
 
       window.web3 = web3;
 
+      setAccount(accounts[0]);
+
       window.ethereum.on("accountsChanged", function (accounts) {
+        setToken(null);
+
+        if (accounts.length === 0) {
+          setAccount(null);
+          localStorage.removeItem("token");
+          return;
+        }
+
         setAccount(accounts[0]);
+
+        Web3Token.sign((msg) =>
+          web3.eth.personal.sign(msg, accounts[0], signMsg)
+        )
+          .then((token) => {
+            setToken(token);
+            localStorage.setItem("token", token);
+          })
+          .catch(() => {});
       });
 
-      setAccount(accounts[0]);
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        let address;
+
+        try {
+          const result = Web3Token.verify(token);
+          address = result.address;
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (!address || address.toLowerCase() !== accounts[0].toLowerCase()) {
+          localStorage.removeItem("token");
+          Web3Token.sign((msg) =>
+            web3.eth.personal.sign(msg, accounts[0], signMsg)
+          )
+            .then((token) => {
+              localStorage.setItem("token", token);
+              setToken(token);
+            })
+            .catch(() => {});
+          return;
+        }
+
+        setToken(token);
+        return;
+      }
+
+      Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], signMsg))
+        .then((token) => {
+          localStorage.setItem("token", token);
+          setToken(token);
+        })
+        .catch(() => {});
     };
     checkConnection();
   }, []);
@@ -51,6 +107,8 @@ const App = () => {
               title="Crypto-Painter"
               account={account}
               setAccount={setAccount}
+              token={token}
+              setToken={setToken}
             />
           }
         />
