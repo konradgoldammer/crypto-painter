@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
 import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";
-import { signMsg } from "../../constants.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 
@@ -65,7 +64,7 @@ const MainNavbar = ({
             setAccount(accounts[0]);
 
             Web3Token.sign((msg) =>
-              web3.eth.personal.sign(msg, accounts[0], signMsg)
+              web3.eth.personal.sign(msg, accounts[0], "")
             )
               .then((token) => {
                 setToken(token);
@@ -74,9 +73,7 @@ const MainNavbar = ({
               .catch(() => {});
           });
 
-          Web3Token.sign((msg) =>
-            web3.eth.personal.sign(msg, accounts[0], signMsg)
-          )
+          Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
             .then((token) => {
               setToken(token);
               localStorage.setItem("token", token);

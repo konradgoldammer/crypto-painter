@@ -2,7 +2,6 @@ import "./css/style.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/index.js";
-import { signMsg } from "./constants.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 
@@ -47,9 +46,7 @@ const App = () => {
 
         setAccount(accounts[0]);
 
-        Web3Token.sign((msg) =>
-          web3.eth.personal.sign(msg, accounts[0], signMsg)
-        )
+        Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
           .then((token) => {
             setToken(token);
             localStorage.setItem("token", token);
@@ -71,9 +68,7 @@ const App = () => {
 
         if (!address || address.toLowerCase() !== accounts[0].toLowerCase()) {
           localStorage.removeItem("token");
-          Web3Token.sign((msg) =>
-            web3.eth.personal.sign(msg, accounts[0], signMsg)
-          )
+          Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
             .then((token) => {
               localStorage.setItem("token", token);
               setToken(token);
@@ -86,7 +81,7 @@ const App = () => {
         return;
       }
 
-      Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], signMsg))
+      Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
         .then((token) => {
           localStorage.setItem("token", token);
           setToken(token);

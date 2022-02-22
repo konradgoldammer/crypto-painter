@@ -5,7 +5,6 @@ import Alert from "../shared/Alert";
 import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
 import { io } from "socket.io-client";
-import { signMsg } from "../../constants.js";
 import Web3Token from "web3-token";
 
 const Home = ({ title, account, setAccount, token, setToken }) => {
@@ -154,9 +153,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
       return;
     }
 
-    Web3Token.sign((msg) =>
-      window.web3.eth.personal.sign(msg, account, signMsg)
-    )
+    Web3Token.sign((msg) => window.web3.eth.personal.sign(msg, account, ""))
       .then((token) => {
         setToken(token);
         localStorage.setItem("token", token);
