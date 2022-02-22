@@ -28,7 +28,6 @@ const Home = ({ title, account, setAccount }) => {
 
     // Wait for new strokes from others
     socket.on("stroke", (stroke) => {
-      console.log("new stroke");
       drawStroke(stroke);
     });
 
