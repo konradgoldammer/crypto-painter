@@ -22,7 +22,7 @@ const Menu = ({ setLineColor, setLineWidth }) => {
         max="20"
         defaultValue="5"
         onChange={(e) => {
-          setLineWidth(e.target.value);
+          setLineWidth(Number(e.target.value));
         }}
       />
     </div>

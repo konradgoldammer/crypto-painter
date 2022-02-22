@@ -87,7 +87,12 @@ const Home = ({ title, account, setAccount }) => {
 
     // Send stroke to server socket
     setIsWaitingForServer(true);
-    socket.emit("stroke", currentStroke, () => {
+    socket.emit("stroke", currentStroke, (error) => {
+      if (error) {
+        setAlert(error);
+        setShowAlert(true);
+      }
+
       setIsWaitingForServer(false);
     });
   };
