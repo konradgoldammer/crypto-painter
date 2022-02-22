@@ -12,7 +12,6 @@ io.on("connection", (socket) => {
   socket.on("stroke", (newStroke, callback) => {
     // Validate stroke
     const { size, color, points } = newStroke;
-    console.log(size);
     if (
       !size ||
       !color ||
@@ -23,7 +22,16 @@ io.on("connection", (socket) => {
       size < 3 ||
       size > 20 ||
       !/^#[0-9A-F]{6}$/i.test(color) || // CHECK IF IS REAL HEX COLOR
-      points.filter((point) => !(point.x && point.y)).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
+      points.filter((point) => {
+        return (
+          isNaN(point.x) ||
+          isNaN(point.y) ||
+          point.x < -20 ||
+          point.x > 740 ||
+          point.y < -20 ||
+          point.y > 596
+        );
+      }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
     ) {
       callback("You submitted an invalid stroke. Try reloading your page.");
       return;
