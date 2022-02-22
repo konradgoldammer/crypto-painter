@@ -80,13 +80,6 @@ const App = () => {
         setToken(token);
         return;
       }
-
-      Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
-        .then((token) => {
-          localStorage.setItem("token", token);
-          setToken(token);
-        })
-        .catch(() => {});
     };
     checkConnection();
   }, []);
