@@ -97,8 +97,46 @@ let image = { strokes: [], painters: [] };
 
     // Save image every interval
     setIntervalAsync(async () => {
+      // Detect if its time to reset image
+      // UTC TIME!!!
+      const date = new Date();
+      const millisInDay =
+        (date.getUTCSeconds() +
+          60 * date.getUTCMinutes() +
+          60 * 60 * date.getUTCHours()) *
+        1000;
+
+      const finalImages = await Image.find({
+        timestamp: {
+          $gte: new Date(Date.now() - config.get("saveInterval")),
+          final: true,
+        },
+      });
+
+      if (
+        millisInDay < config.get("saveInterval") &&
+        finalImages.length === 0
+      ) {
+        image.final = true;
+
+        // Delete old, non-final images in db
+        const { deletedCount } = await Image.deleteMany({
+          final: false,
+          timestamp: { $lt: new Date(Date.now() - 86400000) },
+        });
+
+        console.log(`Delted ${deletedCount} old, non-final image objects`);
+
+        // mint nft
+      }
+
       await new Image(image).save();
-      console.log("Added img to database");
+      console.log("Added FINAL img to database");
+
+      // Reset image
+      if (image.final) {
+        image = {};
+      }
     }, config.get("saveInterval"));
   } catch (error) {
     console.error(error);
