@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-export const Image = mongoose.model(
+const Image = mongoose.model(
   "image",
   new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
@@ -9,3 +9,5 @@ export const Image = mongoose.model(
     final: { type: Boolean, default: false },
   })
 );
+
+module.exports = Image;
