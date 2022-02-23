@@ -17,7 +17,6 @@ let image = { strokes: [], painters: [] };
 
     // Find latest Image in database
     const latestImage = await Image.findOne({}).sort({ timestamp: -1 });
-    console.log(latestImage);
 
     if (!latestImage.final) {
       image = latestImage.toObject();
