@@ -7,7 +7,7 @@ const Image = require("./models/Image.js");
 const port = config.get("port") || 5000;
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 
-const image = { strokes: [], painters: [] };
+let image = { strokes: [], painters: [] };
 
 (async () => {
   try {
@@ -15,10 +15,20 @@ const image = { strokes: [], painters: [] };
     await mongoose.connect(config.get("mongoURI"));
     console.log("Connected to Mongo");
 
+    // Find latest Image in database
+    const latestImage = await Image.findOne({}).sort({ timestamp: -1 });
+    console.log(latestImage);
+
+    if (!latestImage.final) {
+      image = latestImage.toObject();
+    }
+
+    // Listen for new connections
     io.on("connection", (socket) => {
       console.log(`New connection: ${socket.id}`);
       socket.emit("image", image);
 
+      // Listen for new strrokes
       socket.on("stroke", async (newStroke, callback) => {
         const { token, size, color, points } = newStroke;
 
@@ -85,6 +95,7 @@ const image = { strokes: [], painters: [] };
       });
     });
 
+    // Save image every interval
     setIntervalAsync(async () => {
       await new Image(image).save();
       console.log("Added img to database");
