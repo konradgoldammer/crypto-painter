@@ -60,11 +60,13 @@ const App = () => {
         let address;
 
         try {
-          const result = Web3Token.verify(token);
+          const result = await Web3Token.verify(token);
           address = result.address;
         } catch (error) {
           console.log(error);
         }
+
+        console.log(address, accounts[0], "yessir");
 
         if (!address || address.toLowerCase() !== accounts[0].toLowerCase()) {
           localStorage.removeItem("token");
