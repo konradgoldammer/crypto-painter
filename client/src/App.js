@@ -66,8 +66,6 @@ const App = () => {
           console.log(error);
         }
 
-        console.log(address, accounts[0], "yessir");
-
         if (!address || address.toLowerCase() !== accounts[0].toLowerCase()) {
           localStorage.removeItem("token");
           Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))

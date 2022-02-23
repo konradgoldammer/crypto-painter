@@ -4,15 +4,34 @@ const Web3Token = require("web3-token");
 const port = config.get("port") || 5000;
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 
-const image = { strokes: [] };
+const image = { strokes: [], painters: [] };
 
 io.on("connection", (socket) => {
   console.log(`New connection: ${socket.id}`);
   socket.emit("image", image);
 
-  socket.on("stroke", (newStroke, callback) => {
+  socket.on("stroke", async (newStroke, callback) => {
+    const { token, size, color, points } = newStroke;
+
+    // Validate token
+    let address;
+
+    try {
+      const result = await Web3Token.verify(token);
+      address = result.address;
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!address) {
+      console.log(`Socket ${socket.id} submittted invalid token`);
+      callback(
+        "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+      );
+      return;
+    }
+
     // Validate stroke
-    const { size, color, points } = newStroke;
     if (
       !size ||
       !color ||
@@ -34,8 +53,18 @@ io.on("connection", (socket) => {
         );
       }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
     ) {
+      console.log(`Socket ${socket.id} submitted invalid stroke`);
       callback("You submitted an invalid stroke. Try reloading your page.");
       return;
+    }
+
+    // Add address to painters if not included already
+    if (
+      !image.painters.find(
+        (painter) => painter.toLowerCase() === address.toLowerCase()
+      )
+    ) {
+      image.painters.push(address);
     }
 
     console.log(`New stroke from: ${socket.id}`);

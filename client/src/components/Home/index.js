@@ -71,6 +71,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
     setIsDrawing(true);
 
     setCurrentStroke({
+      token,
       color: lineColor,
       size: lineWidth,
       points: [{ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY }],
