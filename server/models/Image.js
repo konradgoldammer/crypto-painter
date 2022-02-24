@@ -7,6 +7,7 @@ const Image = mongoose.model(
     strokes: { type: Array, required: true },
     painters: { type: Array, required: true },
     final: { type: Boolean, default: false },
+    data: { type: String, required: true },
   })
 );
 
