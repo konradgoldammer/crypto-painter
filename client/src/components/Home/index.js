@@ -42,7 +42,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
       ctxRef.current = ctx;
 
       setAlert(
-        "Time's up! The Canvas has been reset. The created image will be raffled off to a random contributor. 🥳"
+        "Time's up! The Canvas has been reset. The created image will be raffled off as an NFT to a random contributor. 🥳"
       );
       setShowAlert(true);
     });
