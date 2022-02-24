@@ -233,6 +233,11 @@ const getDataURL = (image) => {
   const canvas = createCanvas(720, 576);
   const ctx = canvas.getContext("2d");
 
+  // Configure general style
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.globalAlpha = "1";
+
   image.strokes.forEach((stroke) => {
     // Configure style
     ctx.strokeStyle = stroke.color;
