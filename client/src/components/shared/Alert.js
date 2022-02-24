@@ -12,7 +12,7 @@ const Alert = ({ content, showAlert, setShowAlert, setAlert }) => {
       }}
     >
       <ModalHeader>Alert</ModalHeader>
-      <ModalBody>{content}</ModalBody>
+      <ModalBody className="alas">{content}</ModalBody>
     </Modal>
   );
 };

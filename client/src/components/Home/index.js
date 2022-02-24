@@ -55,7 +55,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
       socket.emit("login", account, (nft) => {
         if (nft) {
           setAlert(
-            `Congrats you are the winner of the latest Crypto-Painting (url ${nft.urlImage}, tokenId ${nft.tokenId}). We transferred the NFT to your wallet (transaction hash: ${nft.transaction}) 🥳`
+            `Congrats you are the winner of the latest Crypto-Painting (URL: ${nft.urlImage}, Token-ID: ${nft.tokenId}). We transferred the NFT to your wallet (transaction hash: ${nft.transaction}) 🥳`
           );
           setShowAlert(true);
         }

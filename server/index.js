@@ -40,6 +40,9 @@ let latestWinnerHasConnected = false;
     await mongoose.connect(config.get("mongoURI"));
     console.log("Connected to Mongo");
 
+    // Find latest NFT in database
+    latestNFT = await NFT.findOne({}).sort({ timestamp: -1 });
+
     // Find latest Image in database
     const latestImage = await Image.findOne({}).sort({ timestamp: -1 });
 
@@ -53,11 +56,11 @@ let latestWinnerHasConnected = false;
       console.log(`New connection: ${socket.id}`);
       socket.emit("image", image);
 
-      socket.on("login", async (account, callback) => {
+      socket.on("login", (account, callback) => {
         if (
           !latestWinnerHasConnected &&
           latestNFT &&
-          account === latestNFT.winner
+          account.toLowerCase() === latestNFT.winner.toLowerCase()
         ) {
           latestWinnerHasConnected = true;
           callback(latestNFT);
