@@ -101,22 +101,22 @@ const MainNavbar = ({
             🖌 Crypto-Painter
           </NavbarBrand>
           <Link
-            className={`p-2 text-decoration-none hover-underline ${
+            className={`p-2 text-decoration-none ${
               window.location.pathname === "/about"
                 ? "text-muted link-disabled"
-                : "text-light"
+                : "text-light hover-underline"
             }`}
             to="/about"
           >
             About
           </Link>
           <Link
-            className={`p-2 text-decoration-none hover-underline ${
+            className={`p-2 text-decoration-none ${
               window.location.pathname === "/gallery"
                 ? "text-muted link-disabled"
-                : "text-light"
+                : "text-light hover-underline"
             }`}
-            to="/"
+            to="#"
             disabled="true"
             onClick={() => {
               setAlert(

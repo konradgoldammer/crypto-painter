@@ -213,8 +213,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
         setShowAlert={setShowAlert}
         setAlert={setAlert}
       />
-      <div className="draw-container mx-auto">
-        <p className="text-light">Find out more about Crypto-Painter here 🖌</p>
+      <div className="draw-container mx-auto mt-3">
         <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
         <div className="position-relative">
           <canvas

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/index.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
+import About from "./components/About";
 
 const App = () => {
   const [account, setAccount] = useState(null);
@@ -96,6 +97,18 @@ const App = () => {
               account={account}
               setAccount={setAccount}
               token={token}
+              setToken={setToken}
+            />
+          }
+        />
+        <Route
+          exact
+          path="/about"
+          element={
+            <About
+              title="About"
+              account={account}
+              setAccount={setAccount}
               setToken={setToken}
             />
           }

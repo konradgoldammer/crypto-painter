@@ -45,3 +45,7 @@ code {
 .disabled-link {
   pointer-events: none;
 }
+
+h3 {
+  text-decoration: underline;
+}
