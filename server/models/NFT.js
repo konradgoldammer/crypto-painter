@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const NFT = mongoose.model(
-  "image",
+  "NFT",
   new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
     urlImage: { type: String, required: true },

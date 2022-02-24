@@ -236,7 +236,7 @@ let latestWinnerHasConnected = false;
       if (image.final) {
         image = { strokes: [], painters: [] };
 
-        io.sockets.emit("reset");
+        io.sockets.emit("reset", latestWinner);
 
         console.log("Image has been reset");
       }
