@@ -158,7 +158,6 @@ let image = defaultImage;
 
         // Upload Image to IPFS
         const fileImage = await getFilesFromPath(pathImage);
-        console.log(fileImage);
         const cidImage = await storage.put(fileImage);
         const urlImage = `ipfs://${cidImage}`;
         console.log(`Image added to IPFS with cid: ${cidImage}`);
@@ -201,12 +200,12 @@ let image = defaultImage;
           },
           privateKey
         );
-      }
 
-      const receipt = await web3.eth.sendSignedTransaction(
-        signedTx.rawTransaction
-      );
-      console.log(`TransactionHash: ${receipt.transactionHash}`);
+        const receipt = await web3.eth.sendSignedTransaction(
+          signedTx.rawTransaction
+        );
+        console.log(`TransactionHash: ${receipt.transactionHash}`);
+      }
 
       // Add image to database even if not final
       await new Image(image).save();
