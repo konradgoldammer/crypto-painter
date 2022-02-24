@@ -96,9 +96,38 @@ const MainNavbar = ({
   return (
     <Navbar color="dark" dark expand="md">
       <div className="container d-flex justify-content-between">
-        <NavbarBrand tag={Link} to="/">
-          Crypto-Painter
-        </NavbarBrand>
+        <div className="d-flex">
+          <NavbarBrand tag={Link} to="/">
+            🖌 Crypto-Painter
+          </NavbarBrand>
+          <Link
+            className={`p-2 text-decoration-none hover-underline ${
+              window.location.pathname === "/about"
+                ? "text-muted link-disabled"
+                : "text-light"
+            }`}
+            to="/about"
+          >
+            About
+          </Link>
+          <Link
+            className={`p-2 text-decoration-none hover-underline ${
+              window.location.pathname === "/gallery"
+                ? "text-muted link-disabled"
+                : "text-light"
+            }`}
+            to="/"
+            disabled="true"
+            onClick={() => {
+              setAlert(
+                "Gallery is coming soon... 🤗. Follow @crypt0painter on Twitter for updates."
+              );
+              setShowAlert(true);
+            }}
+          >
+            Gallery
+          </Link>
+        </div>
         {account ? (
           <NavbarText>{account}</NavbarText>
         ) : (
