@@ -18,6 +18,9 @@ const io = require("socket.io")(port, { cors: { origin: "*" } });
 const defaultImage = { strokes: [], painters: [] };
 let image = defaultImage;
 
+let latestWinner = null;
+let latestWinnerHasConnected = false;
+
 (async () => {
   try {
     // Configure Web3
@@ -181,9 +184,17 @@ let image = defaultImage;
         const urlMetadata = `ipfs://${cidMetadata}/metadata.json`;
         console.log(`Metadata added to IPFS with cid: ${cidMetadata}`);
 
-        // DETERMINE WINNER HERE!!
+        // Determine winner
+        const winner =
+          image.painters[Math.floor(Math.random() * image.painters.length)] ||
+          address;
+
+        latestWinner = winner;
+
+        console.log(`Determined the winner: ${winner}`);
+
         // Mint NFT
-        const tx = nugget.methods.awardItem(address, cidImage, urlMetadata);
+        const tx = nugget.methods.awardItem(winner, cidImage, urlMetadata);
         const gas = await tx.estimateGas({ from: address });
         const gasPrice = await web3.eth.getGasPrice();
         const data = tx.encodeABI();
