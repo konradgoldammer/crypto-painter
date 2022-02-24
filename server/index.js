@@ -7,7 +7,8 @@ const Image = require("./models/Image.js");
 const port = config.get("port") || 5000;
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 
-let image = { strokes: [], painters: [] };
+const defaultImage = { strokes: [], painters: [] };
+let image = defaultImage;
 
 (async () => {
   try {
@@ -18,8 +19,9 @@ let image = { strokes: [], painters: [] };
     // Find latest Image in database
     const latestImage = await Image.findOne({}).sort({ timestamp: -1 });
 
-    if (!latestImage.final) {
-      image = latestImage.toObject();
+    if (latestImage && !latestImage.final) {
+      const { strokes, painters } = latestImage.toObject();
+      image = { strokes, painters };
     }
 
     // Listen for new connections
@@ -105,23 +107,22 @@ let image = { strokes: [], painters: [] };
           60 * 60 * date.getUTCHours()) *
         1000;
 
-      const finalImages = await Image.find({
-        timestamp: {
-          $gte: new Date(Date.now() - config.get("saveInterval")),
-          final: true,
-        },
+      const latestFinalImage = await Image.findOne({ final: true }).sort({
+        timestamp: -1,
       });
 
       if (
-        millisInDay < config.get("saveInterval") &&
-        finalImages.length === 0
+        !latestFinalImage ||
+        Date.now() - millisInDay > latestFinalImage.timestamp.getTime()
       ) {
         image.final = true;
 
         // Delete old, non-final images in db
         const { deletedCount } = await Image.deleteMany({
           final: false,
-          timestamp: { $lt: new Date(Date.now() - 86400000) },
+          timestamp: {
+            $lt: new Date(Date.now() - config.get("deleteInterval")),
+          },
         });
 
         console.log(`Delted ${deletedCount} old, non-final image objects`);
@@ -129,12 +130,15 @@ let image = { strokes: [], painters: [] };
         // mint nft
       }
 
+      // Add image to database even if not final
       await new Image(image).save();
-      console.log("Added FINAL img to database");
+      console.log(
+        `Added ${image.final ? "final" : "non-final"} image to database`
+      );
 
       // Reset image
       if (image.final) {
-        image = {};
+        image = { strokes: [], painters: [] };
       }
     }, config.get("saveInterval"));
   } catch (error) {
