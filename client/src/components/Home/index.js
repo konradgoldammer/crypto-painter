@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import MainNavbar from "../shared/MainNavbar";
+import MainFooter from "../shared/MainFooter";
 import Alert from "../shared/Alert";
 import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
@@ -248,6 +249,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
           )}
         </div>
       </div>
+      <MainFooter />
     </div>
   );
 };

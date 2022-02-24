@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import MainNavbar from "./shared/MainNavbar.js";
 import Alert from "./shared/Alert.js";
+import MainFooter from "./shared/MainFooter";
 
 const About = ({ title, account, setAccount, setToken }) => {
   useEffect(() => {
@@ -49,7 +50,16 @@ const About = ({ title, account, setAccount, setToken }) => {
           built on top of the Ethereum blockchain and follows the ERC-721
           standard.
         </p>
+        <hr />
+        <h3 className="text-center">SUPPORT</h3>
+        <p>
+          If you like this project I would be very thankful if you could share
+          it with your friends. Additionaly, you can support me with a donation
+          to my ETH wallet 0xE3bfFA2506739643d6c6FdcA45F84ECFE7dcBc5F ❤. Thanks,
+          Konrad.
+        </p>
       </div>
+      <MainFooter />
     </div>
   );
 };
