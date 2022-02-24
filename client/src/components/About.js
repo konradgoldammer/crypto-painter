@@ -53,7 +53,7 @@ const About = ({ title, account, setAccount, setToken }) => {
         <hr />
         <h3 className="text-center">SUPPORT</h3>
         <p>
-          If you like this project I would be very thankful if you could share
+          If you like this project I would be very greatful if you could share
           it with your friends. Additionaly, you can support me with a donation
           to my ETH wallet 0xE3bfFA2506739643d6c6FdcA45F84ECFE7dcBc5F ❤. Thanks,
           Konrad.
