@@ -4,9 +4,10 @@ const NFT = mongoose.model(
   "image",
   new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
-    imageUrl: { type: String, required: true },
-    metadataUrl: { type: String, required: true },
+    urlImage: { type: String, required: true },
+    urlMetadata: { type: String, required: true },
     winner: { type: String, required: true },
+    tokenId: { type: Number, required: true },
   })
 );
 

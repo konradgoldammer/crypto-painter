@@ -7,6 +7,7 @@ const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
 const Image = require("./models/Image.js");
+const NFT = require("./models/NFT.js");
 const { Web3Storage, getFilesFromPath } = require("web3.storage");
 
 const address = config.get("address");
@@ -216,6 +217,13 @@ let latestWinnerHasConnected = false;
           signedTx.rawTransaction
         );
         console.log(`TransactionHash: ${receipt.transactionHash}`);
+
+        await new NFT({
+          urlImage,
+          urlMetadata,
+          winner,
+          tokenId: Web3.utils.hexToNumber(receipt.logs[0].topics[3]),
+        });
       }
 
       // Add image to database even if not final
