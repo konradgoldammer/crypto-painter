@@ -116,6 +116,14 @@ let latestWinnerHasConnected = false;
           return;
         }
 
+        if (points.length > 200) {
+          console.log(`Socket ${socket.id} submitted too long stroke`);
+          callback(
+            "Stroke not broadcasted because too long 😢. You should reload your page."
+          );
+          return;
+        }
+
         // Add address to painters if not included already
         if (
           !image.painters.find(
