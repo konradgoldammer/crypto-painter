@@ -133,6 +133,12 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
     if (!isDrawing) {
       return;
     }
+
+    if (currentStroke.points.length >= 200) {
+      endDrawing();
+      return;
+    }
+
     ctxRef.current.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
 
     ctxRef.current.stroke();
