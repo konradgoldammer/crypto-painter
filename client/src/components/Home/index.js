@@ -102,12 +102,6 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
     ctxRef.current.closePath();
     setIsDrawing(false);
 
-    // Add dataurl to stroke object
-    setCurrentStroke({
-      ...currentStroke,
-      data: canvasRef.current.toDataURL("image/png"),
-    });
-
     // Send stroke to server socket
     setIsWaitingForServer(true);
     socket.emit("stroke", currentStroke, (error) => {

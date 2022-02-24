@@ -1,4 +1,6 @@
+const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
+const fs = require("fs").promises;
 const mongoose = require("mongoose");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
@@ -127,7 +129,12 @@ let image = defaultImage;
 
         console.log(`Delted ${deletedCount} old, non-final image objects`);
 
-        // mint nft
+        // Create Image
+        const dataURL = getDataURL(image);
+
+        const data = dataURL.replace(/^data:image\/\w+;base64,/, "");
+        const buffer = Buffer.from(data, "base64");
+        await fs.writeFile("./tmp/image.png", buffer);
       }
 
       // Add image to database even if not final
@@ -149,3 +156,30 @@ let image = defaultImage;
     console.error(error);
   }
 })();
+
+const getDataURL = (image) => {
+  console.log("Creating image...");
+
+  const canvas = createCanvas(720, 576);
+  const ctx = canvas.getContext("2d");
+
+  image.strokes.forEach((stroke) => {
+    // Configure style
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+
+    // Draw
+    ctx.beginPath();
+    stroke.points.forEach((point, index) => {
+      if (index === 0) {
+        ctx.moveTo(point.x, point.y);
+        return;
+      }
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+    });
+    ctx.closePath();
+  });
+
+  return canvas.toDataURL();
+};
