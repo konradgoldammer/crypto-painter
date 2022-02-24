@@ -139,6 +139,10 @@ let image = defaultImage;
       // Reset image
       if (image.final) {
         image = { strokes: [], painters: [] };
+
+        io.sockets.emit("reset");
+
+        console.log("Image has been reset");
       }
     }, config.get("saveInterval"));
   } catch (error) {

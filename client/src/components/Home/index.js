@@ -32,6 +32,21 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
       drawStroke(stroke);
     });
 
+    // Wait for reset
+    socket.on("reset", () => {
+      console.log("RESET!");
+
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, 720, 576);
+      ctxRef.current = ctx;
+
+      setAlert(
+        "Time's up! The Canvas has been reset. The created image will be raffled off to a random contributor. 🥳"
+      );
+      setShowAlert(true);
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
