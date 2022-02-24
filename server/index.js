@@ -2,7 +2,7 @@ const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
 const mongoose = require("mongoose");
-const Nugget = require("./contracts/Nugget.json");
+const CryptoPainting = require("./contracts/CryptoPainting.json");
 const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
@@ -27,9 +27,9 @@ let latestWinnerHasConnected = false;
     // Configure Web3
     const web3 = new Web3(config.get("infuraURL"));
     const networkId = await web3.eth.net.getId();
-    const nugget = new web3.eth.Contract(
-      Nugget.abi,
-      Nugget.networks[networkId].address
+    const cryptoPainting = new web3.eth.Contract(
+      CryptoPainting.abi,
+      CryptoPainting.networks[networkId].address
     );
 
     // Configure Web3Storage
@@ -204,7 +204,11 @@ let latestWinnerHasConnected = false;
         console.log(`Determined the winner: ${winner}`);
 
         // Mint NFT
-        const tx = nugget.methods.awardItem(winner, cidImage, urlMetadata);
+        const tx = cryptoPainting.methods.awardItem(
+          winner,
+          cidImage,
+          urlMetadata
+        );
         const gas = await tx.estimateGas({ from: address });
         const gasPrice = await web3.eth.getGasPrice();
         const data = tx.encodeABI();
@@ -212,7 +216,7 @@ let latestWinnerHasConnected = false;
 
         const signedTx = await web3.eth.accounts.signTransaction(
           {
-            to: nugget.options.address,
+            to: cryptoPainting.options.address,
             data,
             gas,
             gasPrice,

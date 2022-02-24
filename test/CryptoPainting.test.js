@@ -1,10 +1,10 @@
-const Nugget = artifacts.require("Nugget");
+const CryptoPainting = artifacts.require("CryptoPainting");
 
-contract("Nugget", (accounts) => {
+contract("CryptoPainting", (accounts) => {
   let contract;
 
   before(async () => {
-    contract = await Nugget.deployed();
+    contract = await CryptoPainting.deployed();
   });
 
   describe("deployment", async () => {
@@ -18,12 +18,12 @@ contract("Nugget", (accounts) => {
 
     it("has a name", async () => {
       const name = await contract.name();
-      assert.equal(name, "Nugget");
+      assert.equal(name, "CryptoPainting");
     });
 
     it("has a symbol", async () => {
       const symbol = await contract.symbol();
-      assert.equal(symbol, "NUG");
+      assert.equal(symbol, "CPA");
     });
   });
 

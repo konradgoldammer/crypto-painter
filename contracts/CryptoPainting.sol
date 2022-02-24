@@ -4,14 +4,14 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Nugget is ERC721 {
+contract CryptoPainting is ERC721 {
   address public admin;
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
   mapping(string => uint8) hashes;
   mapping (uint256 => string) private _tokenURIs;
 
-  constructor() ERC721("Nugget", "NUG") {
+  constructor() ERC721("CryptoPainting", "CPA") {
     admin = msg.sender;
   }
 

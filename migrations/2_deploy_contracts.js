@@ -1,5 +1,5 @@
-const Nugget = artifacts.require("Nugget");
+const CryptoPainting = artifacts.require("CryptoPainting");
 
 module.exports = function (deployer) {
-  deployer.deploy(Nugget);
+  deployer.deploy(CryptoPainting);
 };
