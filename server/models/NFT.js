@@ -8,6 +8,7 @@ const NFT = mongoose.model(
     urlMetadata: { type: String, required: true },
     winner: { type: String, required: true },
     tokenId: { type: Number, required: true },
+    transaction: { type: String, required: true },
   })
 );
 

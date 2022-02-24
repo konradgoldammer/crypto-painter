@@ -42,13 +42,28 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
       ctxRef.current = ctx;
 
       setAlert(
-        "Time's up! The Canvas has been reset. The created image will be raffled off as an NFT to a random contributor. 🥳"
+        "Time's up! The Canvas has been reset. The created image has been raffled off as an NFT to a random contributor. 🥳"
       );
       setShowAlert(true);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("login", account, (nft) => {
+        if (nft) {
+          setAlert(
+            `Congrats you are the winner of the latest Crypto-Painting (url ${nft.urlImage}, tokenId ${nft.tokenId}). We transferred the NFT to your wallet (transaction hash: ${nft.transaction}) 🥳`
+          );
+          setShowAlert(true);
+        }
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
 
   const [alert, setAlert] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -193,6 +208,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
         setAlert={setAlert}
       />
       <div className="draw-container mx-auto">
+        <p className="text-light">Find out more about Crypto-Painter here 🖌</p>
         <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
         <div className="position-relative">
           <canvas

@@ -19,7 +19,7 @@ const io = require("socket.io")(port, { cors: { origin: "*" } });
 const defaultImage = { strokes: [], painters: [] };
 let image = defaultImage;
 
-let latestWinner = null;
+let latestNFT = null;
 let latestWinnerHasConnected = false;
 
 (async () => {
@@ -52,6 +52,17 @@ let latestWinnerHasConnected = false;
     io.on("connection", (socket) => {
       console.log(`New connection: ${socket.id}`);
       socket.emit("image", image);
+
+      socket.on("login", async (account, callback) => {
+        if (
+          !latestWinnerHasConnected &&
+          latestNFT &&
+          account === latestNFT.winner
+        ) {
+          latestWinnerHasConnected = true;
+          callback(latestNFT);
+        }
+      });
 
       // Listen for new strrokes
       socket.on("stroke", async (newStroke, callback) => {
@@ -190,8 +201,6 @@ let latestWinnerHasConnected = false;
           image.painters[Math.floor(Math.random() * image.painters.length)] ||
           address;
 
-        latestWinner = winner;
-
         console.log(`Determined the winner: ${winner}`);
 
         // Mint NFT
@@ -218,12 +227,15 @@ let latestWinnerHasConnected = false;
         );
         console.log(`TransactionHash: ${receipt.transactionHash}`);
 
-        await new NFT({
+        latestNFT = {
           urlImage,
           urlMetadata,
           winner,
           tokenId: Web3.utils.hexToNumber(receipt.logs[0].topics[3]),
-        });
+          transaction: receipt.transactionHash,
+        };
+
+        await new NFT(latestNFT).save();
       }
 
       // Add image to database even if not final
@@ -236,7 +248,7 @@ let latestWinnerHasConnected = false;
       if (image.final) {
         image = { strokes: [], painters: [] };
 
-        io.sockets.emit("reset", latestWinner);
+        io.sockets.emit("reset");
 
         console.log("Image has been reset");
       }
