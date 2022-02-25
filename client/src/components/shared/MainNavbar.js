@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";
 import Web3 from "web3";
 import Web3Token from "web3-token";
+import logo from "../../assets/web-design-brush.png";
 
 const MainNavbar = ({
   account,
@@ -97,8 +98,9 @@ const MainNavbar = ({
     <Navbar color="dark" dark expand="md">
       <div className="container d-flex justify-content-between">
         <div className="d-flex">
-          <NavbarBrand tag={Link} to="/">
-            🖌 Crypto-Painter
+          <NavbarBrand tag={Link} to="/" className="brand">
+            <img src={logo} alt="Crypto-Painter" className="logo me-1" />
+            CRYPTO-PAINTER
           </NavbarBrand>
           <Link
             className={`p-2 text-decoration-none ${

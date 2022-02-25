@@ -111,7 +111,7 @@ const App = () => {
           path="/about"
           element={
             <About
-              title="About"
+              title="About Crypto-Painter"
               account={account}
               setAccount={setAccount}
               setToken={setToken}

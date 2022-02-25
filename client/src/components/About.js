@@ -28,7 +28,7 @@ const About = ({ title, account, setAccount, setToken }) => {
         setShowAlert={setShowAlert}
         setAlert={setAlert}
       />
-      <div className="container text-light">
+      <div className="container text-light mt-3">
         <h3 className="text-center">1. CONNECT</h3>
         <p>
           Connect your Ethereum wallet using MetaMask. If you don't have
