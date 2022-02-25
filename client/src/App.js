@@ -6,6 +6,7 @@ import Web3 from "web3";
 import Web3Token from "web3-token";
 import About from "./components/About";
 import { io } from "socket.io-client";
+import { isMobile } from "react-device-detect";
 
 // Establish socket connection through socket.io
 const socket = io("https://crypto-painter.herokuapp.com/"); // Add to dotenv maybe
@@ -88,6 +89,10 @@ const App = () => {
     };
     checkConnection();
   }, []);
+
+  if (isMobile) {
+    return <p>This content is unavailable on mobile</p>;
+  }
 
   return (
     <Router>
