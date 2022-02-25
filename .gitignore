@@ -4,3 +4,4 @@ config/
 todo
 tmp/
 server/contracts/
+build/
