@@ -202,7 +202,7 @@ let latestWinnerHasConnected = false;
           })}`,
           description: `This Crypto-Painting was created collectively by ${
             image.painters.length
-          } crypto-painter.com users from ${
+          } cryptopainter.art users from ${
             latestNFT ? new Date(image.timestamp).toUTCString() : "X"
           } until ${new Date().toUTCString()}.`,
           image: urlImage,
