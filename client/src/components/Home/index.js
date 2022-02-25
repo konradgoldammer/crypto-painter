@@ -5,24 +5,17 @@ import MainFooter from "../shared/MainFooter";
 import Alert from "../shared/Alert";
 import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
-import { io } from "socket.io-client";
 import Web3Token from "web3-token";
 
-const Home = ({ title, account, setAccount, token, setToken }) => {
+const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   useEffect(() => {
     // Set page title
     document.title = title;
   }, [title]);
 
-  const [socket, setSocket] = useState(null);
-
   useEffect(() => {
-    // Connect with server through socket.io
-    const socket = io("http://localhost:5000"); // Add to dotenv maybe
-    setSocket(socket);
-
     // Get image obj
-    socket.on("image", (image) => {
+    socket.emit("image", (image) => {
       console.log("Loading image...");
       image.strokes.forEach((stroke) => drawStroke(stroke));
       setIsUpdatingCanvas(false);
@@ -30,6 +23,7 @@ const Home = ({ title, account, setAccount, token, setToken }) => {
 
     // Wait for new strokes from others
     socket.on("stroke", (stroke) => {
+      console.log("New other stroke");
       drawStroke(stroke);
     });
 
@@ -260,6 +254,7 @@ Home.propTypes = {
   setAccount: PropTypes.func.isRequired,
   token: PropTypes.string,
   setToken: PropTypes.func.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
 export default Home;

@@ -5,6 +5,10 @@ import Home from "./components/Home/index.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 import About from "./components/About";
+import { io } from "socket.io-client";
+
+// Establish socket connection through socket.io
+const socket = io("http://localhost:5000"); // Add to dotenv maybe
 
 const App = () => {
   const [account, setAccount] = useState(null);
@@ -98,6 +102,7 @@ const App = () => {
               setAccount={setAccount}
               token={token}
               setToken={setToken}
+              socket={socket}
             />
           }
         />

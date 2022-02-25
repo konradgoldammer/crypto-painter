@@ -54,10 +54,13 @@ let latestWinnerHasConnected = false;
     // Listen for new connections
     io.on("connection", (socket) => {
       console.log(`New connection: ${socket.id}`);
-      socket.emit("image", image);
+      socket.on("image", (callback) => {
+        callback(image);
+      });
 
       socket.on("login", (account, callback) => {
         if (
+          account &&
           !latestWinnerHasConnected &&
           latestNFT &&
           account.toLowerCase() === latestNFT.winner.toLowerCase()
@@ -65,6 +68,7 @@ let latestWinnerHasConnected = false;
           latestWinnerHasConnected = true;
           callback(latestNFT);
         }
+        callback();
       });
 
       // Listen for new strrokes
