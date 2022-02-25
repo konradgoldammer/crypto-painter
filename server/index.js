@@ -194,8 +194,17 @@ let latestWinnerHasConnected = false;
 
         // Create Metadata
         const metadataObject = {
-          name: "Crypto-Painting",
-          description: "Cool Crypto-Painting",
+          name: `Crypto-Painting of ${new Date().toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}`,
+          description: `This Crypto-Painting was created collectively by ${
+            image.painters.length
+          } crypto-painter.com users from ${
+            latestNFT ? new Date(image.timestamp).toUTCString() : "X"
+          } until ${new Date().toUTCString()}.`,
           image: urlImage,
         };
 
