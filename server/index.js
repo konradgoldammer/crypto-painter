@@ -1,3 +1,4 @@
+const { instrument } = require("@socket.io/admin-ui");
 const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
@@ -15,6 +16,13 @@ const privateKey = config.get("privateKey");
 const port = config.get("port") || 5000;
 
 const io = require("socket.io")(port, { cors: { origin: "*" } });
+instrument(io, {
+  auth: {
+    type: "basic",
+    username: "admin",
+    password: config.get("passwordSocketAdmin"),
+  },
+});
 
 const defaultImage = { strokes: [], painters: [] };
 let image = defaultImage;
