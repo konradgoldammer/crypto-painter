@@ -13,7 +13,7 @@ const { Web3Storage, getFilesFromPath } = require("web3.storage");
 
 const address = config.get("address");
 const privateKey = config.get("privateKey");
-const port = config.get("port") || 5000;
+const port = process.env.PORT || 3000;
 
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 instrument(io, {
@@ -211,7 +211,7 @@ let latestWinnerHasConnected = false;
           description: `This Crypto-Painting was created collectively by ${
             image.painters.length
           } cryptopainter.art users from ${
-            latestNFT ? new Date(image.timestamp).toUTCString() : "X"
+            latestNFT ? latestNFT.timestamp.toUTCString() : "X"
           } until ${new Date().toUTCString()}.`,
           image: urlImage,
         };
