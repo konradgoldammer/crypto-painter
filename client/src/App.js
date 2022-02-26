@@ -90,8 +90,13 @@ const App = () => {
     checkConnection();
   }, []);
 
-  if (isMobile) {
-    return <p>This content is unavailable on mobile</p>;
+  if (!isMobile) {
+    return (
+      <p className="text-light">
+        This content is unavailable on mobile 😿. <br /> Go to our Twitter page
+        @crypt0painter if you want to find out who won the newest NFT.
+      </p>
+    );
   }
 
   return (
