@@ -90,9 +90,9 @@ const App = () => {
     checkConnection();
   }, []);
 
-  if (!isMobile) {
+  if (isMobile) {
     return (
-      <p className="text-light">
+      <p className="text-light m-2">
         This content is unavailable on mobile 😿. <br /> Go to our Twitter page
         @crypt0painter if you want to find out who won the newest NFT.
       </p>
