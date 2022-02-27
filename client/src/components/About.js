@@ -55,7 +55,7 @@ const About = ({ title, account, setAccount, setToken }) => {
         <p>
           If you like this project I would be very greatful if you could share
           it with your friends. Additionaly, you can support me with a donation
-          to my ETH wallet 0xE3bfFA2506739643d6c6FdcA45F84ECFE7dcBc5F ❤. Thanks,
+          to my ETH wallet 0x6415ed9272bE40dAFb0bbA01ab4cB31A93a6f5d9 ❤. Thanks,
           Konrad.
         </p>
       </div>
