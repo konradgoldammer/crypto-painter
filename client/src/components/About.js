@@ -44,11 +44,11 @@ const About = ({ title, account, setAccount, setToken }) => {
         </p>
         <h3 className="text-center">3. WIN</h3>
         <p>
-          Every day at 12 PM UTC the canvas will be reset and one lucky randomly
-          selected collaborator will win an NFT version of the collaboratively
-          created image. The smart contract that powers the Crypto-Paintings is
-          built on top of the Ethereum blockchain and follows the ERC-721
-          standard.
+          Every day at 12 midnight UTC the canvas will be reset and one lucky
+          randomly selected collaborator will win an NFT version of the
+          collaboratively created image. The smart contract that powers the
+          Crypto-Paintings is built on top of the Ethereum blockchain and
+          follows the ERC-721 standard.
         </p>
         <hr />
         <h3 className="text-center">SUPPORT</h3>
