@@ -27,7 +27,7 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(privateKey, config.get("infuraUrlMainnet"));
       },
-      gas: 5500000,
+      gas: 5000000,
       gasPrice: 25000000000,
       confirmations: 2,
       network_id: 1,
