@@ -1,17 +1,11 @@
+const config = require("config");
 const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const address = "0xE3bfFA2506739643d6c6FdcA45F84ECFE7dcBc5F";
-const privateKey =
-  "eb811da4f69a14ace52b3c13250e417795c2a88c32c13fa184e251176e4d2d62";
+const address = config.get("address");
+const privateKey = config.get("privateKey");
 
-const provider = new HDWalletProvider(
-  privateKey,
-  "https://rinkeby.infura.io/v3/9f23d5afa645498b958a2b18a6d0d78a"
-);
-
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const provider = new HDWalletProvider(privateKey, config.get("infuraUrl"));
 
 module.exports = {
   contracts_build_directory: path.join(__dirname, "/server/contracts"),
