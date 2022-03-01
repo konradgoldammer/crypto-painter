@@ -8,6 +8,18 @@ import Menu from "./Menu";
 import Web3Token from "web3-token";
 
 const Home = ({ title, account, setAccount, token, setToken, socket }) => {
+  const canvasRef = useRef(null);
+  const ctxRef = useRef(null);
+
+  const [alert, setAlert] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [isUpdatingCanvas, setIsUpdatingCanvas] = useState(true);
+  const [isWaitingForServer, setIsWaitingForServer] = useState(false);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [lineWidth, setLineWidth] = useState(5);
+  const [lineColor, setLineColor] = useState("#000000"); // black
+  const [currentStroke, setCurrentStroke] = useState(null);
+
   useEffect(() => {
     // Set page title
     document.title = title;
@@ -19,12 +31,6 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       console.log("Loading image...");
       image.strokes.forEach((stroke) => drawStroke(stroke));
       setIsUpdatingCanvas(false);
-    });
-
-    // Wait for new strokes from others
-    socket.on("stroke", (stroke) => {
-      console.log("New other stroke");
-      drawStroke(stroke);
     });
 
     // Wait for reset
@@ -43,7 +49,20 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
+
+  useEffect(() => {
+    // Remove old listener
+    socket.removeListener("stroke");
+
+    // Wait for new strokes from others
+    socket.on("stroke", (stroke) => {
+      console.log("New other stroke");
+      drawStroke(stroke);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lineWidth, lineColor, socket]);
 
   useEffect(() => {
     if (socket) {
@@ -59,19 +78,6 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
-
-  const [alert, setAlert] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [isUpdatingCanvas, setIsUpdatingCanvas] = useState(true);
-  const [isWaitingForServer, setIsWaitingForServer] = useState(false);
-
-  const canvasRef = useRef(null);
-  const ctxRef = useRef(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [lineWidth, setLineWidth] = useState(5);
-  const [lineColor, setLineColor] = useState("#000000"); // black
-
-  const [currentStroke, setCurrentStroke] = useState(null);
 
   const resetCanvasStyle = () => {
     const canvas = canvasRef.current;
