@@ -27,10 +27,33 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(privateKey, config.get("infuraUrlMainnet"));
       },
-      gas: 5000000,
-      gasPrice: 25000000000,
+      // gas: 5000000,
+      // gasPrice: 25000000000,
       confirmations: 2,
       network_id: 1,
+    },
+    bscTestnet: {
+      provider: () => {
+        return new HDWalletProvider(
+          privateKey,
+          "https://data-seed-prebsc-1-s1.binance.org:8545/"
+        );
+      },
+      network_id: 97,
+      timeoutBlocks: 200,
+      confirmations: 10,
+    },
+    bsc: {
+      provider: () => {
+        return new HDWalletProvider(
+          privateKey,
+          "https://bsc-dataseed1.binance.org"
+        );
+      },
+      network_id: 56,
+      gas: 5500000,
+      confirmations: 10,
+      timeoutBlocks: 200,
     },
   },
 

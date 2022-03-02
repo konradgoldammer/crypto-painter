@@ -28,6 +28,12 @@ contract("CryptoPainting", (accounts) => {
   });
 
   // describe("minting", async () => {
+  //   it("receives uri correctly", async () => {
+  //     const result = await contract.awardItem("jaklsdfjlk", "hash", "metadata");
+  //   });
+  // });
+
+  // describe("minting", async () => {
   //   it("creates a  new token", async () => {
   //     // const result = await contract.awardItem("#ffffff");
   //     // SUCCESS
