@@ -33,7 +33,7 @@ let latestWinnerHasConnected = false;
 (async () => {
   try {
     // Configure Web3
-    const web3 = new Web3(config.get("infuraURL"));
+    const web3 = new Web3("https://bsc-dataseed.binance.org/");
     const networkId = await web3.eth.net.getId();
     const cryptoPainting = new web3.eth.Contract(
       CryptoPainting.abi,
