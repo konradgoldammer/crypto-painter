@@ -47,7 +47,7 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(
           privateKey,
-          "https://bsc-dataseed1.binance.org"
+          "wss://bsc-ws-node.nariox.org:443"
         );
       },
       network_id: 56,
