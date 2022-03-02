@@ -21,7 +21,7 @@ const MainNavbar = ({
 
     if (!window.ethereum) {
       setAlert(
-        "You need to install MetaMask first 🦊 If you don't know what MetaMask is, I recommend you watch this video https://www.youtube.com/watch?v=YVgfHZMFFFQ"
+        "You need to install MetaMask first 🦊 Download: https://metamask.io/download/"
       );
       setShowAlert(true);
       setIsConnecting(false);

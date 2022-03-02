@@ -32,10 +32,18 @@ const About = ({ title, account, setAccount, setToken }) => {
         <h3 className="text-center">1. CONNECT</h3>
         <p>
           Connect your Ethereum wallet using MetaMask. If you don't have
-          MetaMask installed, you can download it for your browser here{" "}
-          <a href="https://metamask.io/download/" className="text-light">
+          MetaMask installed, you can download it for your browser here
+          <a href="https://metamask.io/download/" className="text-light ms-1">
             https://metamask.io/download/
           </a>
+          . If you don't know what MetaMask is, I recommend watching this video
+          <a
+            href="https://www.youtube.com/watch?v=YVgfHZMFFFQ"
+            className="text-light ms-1"
+          >
+            https://www.youtube.com/watch?v=YVgfHZMFFFQ
+          </a>
+          .
         </p>
         <h3 className="text-center">2. DRAW</h3>
         <p>
