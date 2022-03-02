@@ -31,8 +31,8 @@ const About = ({ title, account, setAccount, setToken }) => {
       <div className="container text-light mt-3">
         <h3 className="text-center">1. CONNECT</h3>
         <p>
-          Connect your Ethereum wallet using MetaMask. If you don't have
-          MetaMask installed, you can download it for your browser here
+          Connect your wallet using MetaMask. If you don't have MetaMask
+          installed, you can download it for your browser here
           <a href="https://metamask.io/download/" className="text-light ms-1">
             https://metamask.io/download/
           </a>
@@ -55,8 +55,8 @@ const About = ({ title, account, setAccount, setToken }) => {
           Every day at 12 midnight UTC the canvas will be reset and one lucky
           randomly selected collaborator will win an NFT version of the
           collaboratively created image. The smart contract that powers the
-          Crypto-Paintings is built on top of the Ethereum blockchain and
-          follows the ERC-721 standard.
+          Crypto-Paintings is built on top of the Binance Smart Chain blockchain
+          and follows the ERC-721 standard.
         </p>
         <hr />
         <h3 className="text-center">SUPPORT</h3>
