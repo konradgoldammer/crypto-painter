@@ -159,19 +159,20 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     const ctx = canvas.getContext("2d");
     ctx.strokeStyle = stroke.color;
     ctx.lineWidth = stroke.size;
-    ctxRef.current = ctx;
 
     // Draw
-    ctxRef.current.beginPath();
+    ctx.beginPath();
     stroke.points.forEach((point, index) => {
       if (index === 0) {
-        ctxRef.current.moveTo(point.x, point.y);
+        ctx.moveTo(point.x, point.y);
         return;
       }
-      ctxRef.current.lineTo(point.x, point.y);
-      ctxRef.current.stroke();
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
     });
-    ctxRef.current.closePath();
+    ctx.closePath();
+
+    ctxRef.current = ctx;
 
     // Reset style
     resetCanvasStyle();
