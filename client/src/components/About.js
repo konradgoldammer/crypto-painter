@@ -56,7 +56,15 @@ const About = ({ title, account, setAccount, setToken }) => {
           randomly selected collaborator will win an NFT version of the
           collaboratively created image. The smart contract that powers the
           Crypto-Paintings is built on top of the Binance Smart Chain blockchain
-          and follows the ERC-721 standard.
+          and follows the ERC-721 standard. The winner will be anounced via our
+          Twitter
+          <a
+            href="https://twitter.com/crypt0painter"
+            className="text-light ms-1"
+          >
+            @crypt0painter
+          </a>
+          .
         </p>
         <hr />
         <h3 className="text-center">SUPPORT</h3>
