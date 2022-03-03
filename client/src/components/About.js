@@ -63,9 +63,10 @@ const About = ({ title, account, setAccount, setToken }) => {
         <p>
           If you like this project I would be very greatful if you could share
           it with your friends. Additionaly, you can support me with a donation
-          to my ETH wallet 0xd4770038BBd26C12c191789CfCF7CBd29932D606 ❤. Thanks,
-          Konrad.
+          to my ETH/BNB wallet 0xd4770038BBd26C12c191789CfCF7CBd29932D606 or BTC
+          wallet 1NnxcZvf9BvDdoNyEtxgTZxcHa54e14HSL ❤. Thanks, Konrad.
         </p>
+        C:\Users\Konrad\Desktop\exodus-exports\exodus_0-bitcoin-addresses-2022-03-03_16-09-15.csv
       </div>
       <MainFooter />
     </div>
