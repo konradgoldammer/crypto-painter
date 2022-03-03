@@ -19,6 +19,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const [lineWidth, setLineWidth] = useState(5);
   const [lineColor, setLineColor] = useState("#000000"); // black
   const [currentStroke, setCurrentStroke] = useState(null);
+  const [queuedStrokes, setQueuedStrokes] = useState([]);
 
   useEffect(() => {
     // Set page title
@@ -58,11 +59,19 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     // Wait for new strokes from others
     socket.on("stroke", (stroke) => {
       console.log("New other stroke");
-      drawStroke(stroke);
+
+      if (!isDrawing) {
+        drawStroke(stroke);
+        return;
+      }
+
+      // Add stroke to queue bc user is drawing
+      console.log("Added new other stroke to queue");
+      setQueuedStrokes([...queuedStrokes, stroke]);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lineWidth, lineColor, socket]);
+  }, [lineWidth, lineColor, isDrawing, queuedStrokes, socket]);
 
   useEffect(() => {
     if (socket) {
@@ -118,6 +127,12 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     ctxRef.current.closePath();
     setIsDrawing(false);
 
+    // Draw queued strokes
+    if (queuedStrokes.length > 0) {
+      queuedStrokes.forEach((queuedStroke) => drawStroke(queuedStroke));
+      setQueuedStrokes([]);
+    }
+
     // Send stroke to server socket
     setIsWaitingForServer(true);
     socket.emit("stroke", currentStroke, (error) => {
@@ -171,8 +186,6 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       ctx.stroke();
     });
     ctx.closePath();
-
-    ctxRef.current = ctx;
 
     // Reset style
     resetCanvasStyle();
