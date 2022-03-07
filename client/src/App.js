@@ -7,6 +7,7 @@ import Web3Token from "web3-token";
 import About from "./components/About";
 import { io } from "socket.io-client";
 import { isMobile } from "react-device-detect";
+import { signStatement } from "./constants";
 
 // Establish socket connection through socket.io
 const socket = io("https://crypto-painter.herokuapp.com/"); // Add to dotenv maybe
@@ -52,7 +53,9 @@ const App = () => {
 
         setAccount(accounts[0]);
 
-        Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
+        Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""), {
+          statement: signStatement,
+        })
           .then((token) => {
             setToken(token);
             localStorage.setItem("token", token);
@@ -74,7 +77,12 @@ const App = () => {
 
         if (!address || address.toLowerCase() !== accounts[0].toLowerCase()) {
           localStorage.removeItem("token");
-          Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
+          Web3Token.sign(
+            (msg) => web3.eth.personal.sign(msg, accounts[0], ""),
+            {
+              statement: signStatement,
+            }
+          )
             .then((token) => {
               localStorage.setItem("token", token);
               setToken(token);

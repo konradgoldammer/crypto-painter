@@ -6,6 +6,7 @@ import loading from "../../assets/loading.gif";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 import logo from "../../assets/web-design-brush.png";
+import { signStatement } from "../../constants";
 
 const MainNavbar = ({
   account,
@@ -64,8 +65,11 @@ const MainNavbar = ({
 
             setAccount(accounts[0]);
 
-            Web3Token.sign((msg) =>
-              web3.eth.personal.sign(msg, accounts[0], "")
+            Web3Token.sign(
+              (msg) => web3.eth.personal.sign(msg, accounts[0], ""),
+              {
+                statement: signStatement,
+              }
             )
               .then((token) => {
                 setToken(token);
@@ -74,7 +78,12 @@ const MainNavbar = ({
               .catch(() => {});
           });
 
-          Web3Token.sign((msg) => web3.eth.personal.sign(msg, accounts[0], ""))
+          Web3Token.sign(
+            (msg) => web3.eth.personal.sign(msg, accounts[0], ""),
+            {
+              statement: signStatement,
+            }
+          )
             .then((token) => {
               setToken(token);
               localStorage.setItem("token", token);
@@ -119,7 +128,6 @@ const MainNavbar = ({
                 : "text-light hover-underline"
             }`}
             to="#"
-            disabled="true"
             onClick={() => {
               setAlert(
                 "Gallery is coming soon... 🤗. Follow @crypt0painter on Twitter for updates."
