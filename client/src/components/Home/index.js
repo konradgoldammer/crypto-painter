@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import MainNavbar from "../shared/MainNavbar";
 import MainFooter from "../shared/MainFooter";
+import Chat from "./Chat/index.js";
 import Alert from "../shared/Alert";
 import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
 import Web3Token from "web3-token";
+import { signStatement } from "../../constants";
 
 const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const canvasRef = useRef(null);
@@ -205,12 +207,16 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       return;
     }
 
-    Web3Token.sign((msg) => window.web3.eth.personal.sign(msg, account, ""))
+    Web3Token.sign((msg) => window.web3.eth.personal.sign(msg, account, ""), {
+      statement: signStatement,
+    })
       .then((token) => {
         setToken(token);
         localStorage.setItem("token", token);
       })
-      .catch(() => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -228,40 +234,43 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
         setShowAlert={setShowAlert}
         setAlert={setAlert}
       />
-      <div className="draw-container mx-auto mt-3">
-        <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
-        <div className="position-relative">
-          <canvas
-            onMouseDown={
-              token && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
-            }
-            onMouseUp={
-              token && !isUpdatingCanvas && !isWaitingForServer
-                ? endDrawing
-                : null
-            }
-            onMouseMove={
-              token && !isUpdatingCanvas && !isWaitingForServer ? draw : null
-            }
-            onMouseOut={
-              token && !isUpdatingCanvas && !isWaitingForServer
-                ? endDrawing
-                : null
-            }
-            ref={canvasRef}
-            width={`720px`}
-            height={`576px`}
-            className="draw-area bg-white border border-secondary border-3"
-          />
-          {isUpdatingCanvas && (
-            <img
-              src={loading}
-              alt="connecting..."
-              title="connecting..."
-              className="loading center"
+      <div className="d-flex justify-content-center mt-3">
+        <div className="draw-container">
+          <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
+          <div className="position-relative">
+            <canvas
+              onMouseDown={
+                token && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
+              }
+              onMouseUp={
+                token && !isUpdatingCanvas && !isWaitingForServer
+                  ? endDrawing
+                  : null
+              }
+              onMouseMove={
+                token && !isUpdatingCanvas && !isWaitingForServer ? draw : null
+              }
+              onMouseOut={
+                token && !isUpdatingCanvas && !isWaitingForServer
+                  ? endDrawing
+                  : null
+              }
+              ref={canvasRef}
+              width={`720px`}
+              height={`576px`}
+              className="draw-area bg-white border border-secondary border-3"
             />
-          )}
+            {isUpdatingCanvas && (
+              <img
+                src={loading}
+                alt="connecting..."
+                title="connecting..."
+                className="loading center"
+              />
+            )}
+          </div>
         </div>
+        <Chat />
       </div>
       <MainFooter />
     </div>

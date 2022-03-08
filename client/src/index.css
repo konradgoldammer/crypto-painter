@@ -59,3 +59,53 @@ h3 {
 .brand {
   font-family: "Orbitron", sans-serif;
 }
+
+.chat-container {
+  width: 250px;
+  height: 500px;
+}
+
+.scrollbar {
+  overflow-y: scroll;
+}
+
+.scrollbar-primary {
+  scrollbar-color: #0d6efd #212529;
+}
+
+.scrollbar-primary::-webkit-scrollbar {
+  width: 8px;
+  background-color: #212529;
+  border-radius: 3px;
+}
+
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #0d6efd;
+  border: 2px solid #212529;
+}
+
+.chat-area {
+  height: 92%;
+  box-sizing: border-box;
+}
+
+.chat-input {
+  height: 8%;
+  border: 0;
+  box-sizing: border-box;
+}
+
+.chat-input:focus {
+  outline: 0;
+  border-top-style: dotted !important;
+}
+
+.chat-header {
+  box-sizing: border-box;
+}
+
+.chat-header p {
+  display: inline;
+}
