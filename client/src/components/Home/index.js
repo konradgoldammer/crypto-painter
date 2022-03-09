@@ -258,7 +258,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
               ref={canvasRef}
               width={`720px`}
               height={`576px`}
-              className="draw-area bg-white border border-secondary border-3"
+              className="draw-area bg-white border border-secondary border-4"
             />
             {isUpdatingCanvas && (
               <img

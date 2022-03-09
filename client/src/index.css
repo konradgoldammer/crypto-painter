@@ -109,3 +109,48 @@ h3 {
 .chat-header p {
   display: inline;
 }
+
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 32px;
+  height: auto;
+  padding: 1px;
+  border-radius: 10px;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border-radius: 4px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 100%;
+  outline: none;
+  box-sizing: border-box;
+  border: 1px solid white;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 22px;
+  border-radius: 4px;
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 30px;
+  height: 22px;
+  border: none;
+  background: #0d6efd;
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

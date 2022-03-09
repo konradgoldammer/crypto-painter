@@ -4,19 +4,20 @@ import PropTypes from "prop-types";
 const Menu = ({ setLineColor, setLineWidth }) => {
   return (
     <div
-      className="bg-secondary d-flex p-2 pb-1 rounded-top text-light"
+      className="bg-secondary d-flex p-1 pb-0 rounded-top text-light"
       style={{ width: "fit-content" }}
     >
-      <label className="me-1">Brush Color</label>
+      <label className="me-2">Brush Color</label>
       <input
-        className="me-2"
+        className="me-3 rounded"
         type="color"
         onChange={(e) => {
           setLineColor(e.target.value);
         }}
       />
-      <label className="me-1">Brush Width</label>
+      <label className="me-2">Brush Width</label>
       <input
+        className="slider bg-light rounded"
         type="range"
         min="3"
         max="20"
