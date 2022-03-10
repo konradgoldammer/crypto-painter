@@ -175,16 +175,6 @@ let latestWinnerHasConnected = false;
       ) {
         image.final = true;
 
-        // Delete old, non-final images in db
-        const { deletedCount } = await Image.deleteMany({
-          final: false,
-          timestamp: {
-            $lt: new Date(Date.now() - config.get("deleteInterval")),
-          },
-        });
-
-        console.log(`Delted ${deletedCount} old, non-final image objects`);
-
         // Create Image
         const dataURL = getDataURL(image);
 
