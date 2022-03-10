@@ -165,13 +165,9 @@ let latestWinnerHasConnected = false;
           60 * 60 * date.getUTCHours()) *
         1000;
 
-      const latestFinalImage = await Image.findOne({ final: true }).sort({
-        timestamp: -1,
-      });
-
       if (
-        !latestFinalImage ||
-        Date.now() - millisInDay > latestFinalImage.timestamp.getTime()
+        !latestNFT ||
+        Date.now() - millisInDay > latestNFT.timestamp.getTime()
       ) {
         image.final = true;
 
