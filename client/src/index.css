@@ -161,3 +161,8 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 4px;
   box-sizing: border-box;
 }
+
+.bubble-icon {
+  top: 7px;
+  cursor: pointer;
+}
