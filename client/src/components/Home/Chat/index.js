@@ -14,7 +14,7 @@ const Chat = () => {
         <p className="m-0">Chat</p>
         <p className="m-0">5 online</p>
       </div>
-      <div className="chat-body border border-secondary border-4 rounded-bottom bg-primary">
+      <div className="chat-body border border-secondary border-4 rounded-bottom">
         <div className="chat-area bg-dark rounded-top">
           <div className="scrollbar scrollbar-primary h-100">
             {messages.map((message) => (
