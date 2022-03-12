@@ -20,13 +20,15 @@ code {
 }
 
 .draw-container {
-  width: 720px;
+  width: fit-content;
+  height: fit-content;
 }
 
 .draw-area {
+  vertical-align: bottom;
   width: 720px;
   height: 576px;
-  vertical-align: bottom;
+  box-sizing: content-box;
 }
 
 .center {
@@ -62,6 +64,7 @@ h3 {
 
 .chat-container {
   width: 250px;
+  height: fit-content !important;
 }
 
 .scrollbar {
@@ -85,13 +88,18 @@ h3 {
   border: 2px solid #212529;
 }
 
+.chat-body {
+  height: 576px;
+  box-sizing: content-box;
+}
+
 .chat-area {
-  height: 92%;
+  height: 94%;
   box-sizing: border-box;
 }
 
 .chat-input {
-  height: 8%;
+  height: 6%;
   border: 0;
   box-sizing: border-box;
 }
