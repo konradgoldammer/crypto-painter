@@ -51,6 +51,14 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       setShowAlert(true);
     });
 
+    socket.on("disconnect", () => {
+      setIsWaitingForServer(true);
+    });
+
+    socket.on("connect", () => {
+      setIsWaitingForServer(false);
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
@@ -240,7 +248,9 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
           <div className="position-relative">
             <canvas
               onMouseDown={
-                token && !isUpdatingCanvas ? startDrawing : showNotAllowedAlert
+                token && !isUpdatingCanvas && !isWaitingForServer
+                  ? startDrawing
+                  : showNotAllowedAlert
               }
               onMouseUp={
                 token && !isUpdatingCanvas && !isWaitingForServer
@@ -270,7 +280,12 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             )}
           </div>
         </div>
-        <Chat socket={socket} />
+        <Chat
+          socket={socket}
+          setAlert={setAlert}
+          setShowAlert={setShowAlert}
+          token={token}
+        />
       </div>
       <MainFooter />
     </div>
