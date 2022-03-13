@@ -270,7 +270,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             )}
           </div>
         </div>
-        <Chat setShowAlert={setShowAlert} setAlert={setAlert} />
+        <Chat socket={socket} />
       </div>
       <MainFooter />
     </div>

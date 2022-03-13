@@ -62,6 +62,33 @@ let latestWinnerHasConnected = false;
     // Listen for new connections
     io.on("connection", (socket) => {
       console.log(`New connection: ${socket.id}`);
+
+      socket.on("chat", (callback) => {
+        callback({ content: "Connected" });
+      });
+
+      socket.on("message", (message, callback) => {
+        const { token, content, timestamp } = message;
+
+        // Validate token
+        let address;
+
+        try {
+          const result = await Web3Token.verify(token);
+          address = result.address;
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (!address) {
+          console.log(`Socket ${socket.id} submittted invalid token`);
+          callback(
+            "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+          );
+          return;
+        }
+      });
+
       socket.on("image", (callback) => {
         callback(image);
       });

@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import loading from "../../../assets/loading.gif";
 import Bubble from "./Bubble";
 import Info from "./Info";
 
-const Chat = ({ setShowAlert, setAlert }) => {
+const Chat = ({ socket }) => {
   const [paintersOnline, setPaintersOnline] = useState(0);
-  const [messages, setMessages] = useState([1, 2]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isWaitingForServer, setIsWaitingForServer] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    // Load chat
+    socket.emit("chat", (info) => {
+      setMessages([...messages, <Info info={info} />]);
+      setIsLoading(false);
+    });
+
+    // Get messges
+    socket.on("message", (message) => {
+      setMessages([...messages, <Bubble message={message} />]);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   return (
     <div className="chat-container bg-secondary ms-2 rounded text-light">
@@ -15,26 +33,29 @@ const Chat = ({ setShowAlert, setAlert }) => {
       </div>
       <div className="chat-body border border-secondary border-4 rounded-bottom">
         <div className="chat-area bg-dark rounded-top">
-          <div className="scrollbar scrollbar-primary h-100 py-1">
-            <Info info={{ content: "Connected" }} />
-            {messages.map((message) => (
-              <Bubble
-                message={{
-                  content:
-                    "ja jetzt kommt sjdfalkjasdflsjmdfvklvdmnafsjmvsdfakjlamaj und ja",
-                  address: "0x6415ed9272bE40dAFb0bbA01ab4cB31A93a6f5d9",
-                  timestamp: new Date(),
-                }}
-                setShowAlert={setShowAlert}
-                setAlert={setAlert}
+          <div className="scrollbar scrollbar-primary h-100 py-1 position-relative">
+            {!isLoading ? (
+              messages.map((message) => message)
+            ) : (
+              <img
+                src={loading}
+                alt="connecting..."
+                title="connecting..."
+                className="loading center"
               />
-            ))}
+            )}
           </div>
         </div>
         <input
           className="chat-input bg-dark border-top border-secondary border-2 text-light rounded-bottom w-100 px-1 py-0"
           type="text"
           placeholder="Send a message"
+          onKeyDown={async (e) => {
+            if (e.keyCode === 13) {
+              setIsWaitingForServer(true);
+            }
+          }}
+          disabled={isLoading || isWaitingForServer}
         />
       </div>
     </div>
@@ -42,8 +63,7 @@ const Chat = ({ setShowAlert, setAlert }) => {
 };
 
 Chat.propTypes = {
-  setShowAlert: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
 export default Chat;
