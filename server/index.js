@@ -3,7 +3,6 @@ const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
 const mongoose = require("mongoose");
-const CryptoPainting = require("./contracts/CryptoPainting.json");
 const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
@@ -13,7 +12,7 @@ const { Web3Storage, getFilesFromPath } = require("web3.storage");
 
 const address = config.get("address");
 const privateKey = config.get("privateKey");
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 const io = require("socket.io")(port, { cors: { origin: "*" } });
 instrument(io, {
@@ -29,6 +28,8 @@ let image = defaultImage;
 
 let latestNFT = null;
 let latestWinnerHasConnected = false;
+
+let paintersOnline = 0;
 
 (async () => {
   try {
@@ -63,12 +64,21 @@ let latestWinnerHasConnected = false;
     io.on("connection", (socket) => {
       console.log(`New connection: ${socket.id}`);
 
-      socket.on("chat", (callback) => {
-        callback({ content: "Connected" });
+      paintersOnline++;
+      io.sockets.emit("painters_online", paintersOnline);
+
+      socket.on("disconnect", () => {
+        paintersOnline--;
+        io.sockets.emit("painters_online", paintersOnline);
       });
 
-      socket.on("message", (message, callback) => {
-        const { token, content, timestamp } = message;
+      socket.on("chat", (callback) => {
+        callback({ content: "Welcome to the chat" });
+      });
+
+      // Listen for new messages
+      socket.on("message", async (newMessage, callback) => {
+        const { token, content } = newMessage;
 
         // Validate token
         let address;
@@ -83,10 +93,27 @@ let latestWinnerHasConnected = false;
         if (!address) {
           console.log(`Socket ${socket.id} submittted invalid token`);
           callback(
-            "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+            "Message not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
           );
           return;
         }
+
+        // Validate message
+        if (!content || typeof content !== "string" || content.length > 100) {
+          console.log(`Socket ${socket.id} submitted invalid message`);
+          callback(
+            "You submitted an invalid message. Try reloading your page."
+          );
+          return;
+        }
+
+        console.log(`New message from: ${socket.id}`);
+
+        const message = { content, address, timestamp: Date.now() };
+        callback(null, message);
+
+        // Send strokes to others
+        socket.broadcast.emit("message", message);
       });
 
       socket.on("image", (callback) => {
@@ -106,7 +133,7 @@ let latestWinnerHasConnected = false;
         callback();
       });
 
-      // Listen for new strrokes
+      // Listen for new strokes
       socket.on("stroke", async (newStroke, callback) => {
         const { token, size, color, points } = newStroke;
 
