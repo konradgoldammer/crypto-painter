@@ -10,7 +10,7 @@ const Bubble = ({ message, setShowAlert, setAlert }) => {
   return (
     <p className="m-0 p-1 position-relative" style={{ wordWrap: "break-word" }}>
       <span className="text-secondary">
-        {message.timestamp.toLocaleTimeString(navigator.language, {
+        {new Date(message.timestamp).toLocaleTimeString(navigator.language, {
           hour: "2-digit",
           minute: "2-digit",
         })}
