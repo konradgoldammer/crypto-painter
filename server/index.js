@@ -3,6 +3,7 @@ const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
 const mongoose = require("mongoose");
+const CryptoPainting = require("./contracts/CryptoPainting.json");
 const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
