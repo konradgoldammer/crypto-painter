@@ -117,6 +117,11 @@ let paintersOnline = 0;
         socket.broadcast.emit("message", message);
       });
 
+      socket.on("mobile", (callback) => {
+        const image = getDataURL(image);
+        callback(image);
+      });
+
       socket.on("image", (callback) => {
         callback(image);
       });
