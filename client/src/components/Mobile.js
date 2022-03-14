@@ -12,7 +12,7 @@ const Mobile = ({ setRenderDesktop }) => {
         CRYPTO-PAINTER
       </p>
       <img
-        className="mobile-image mx-1 mb-3 border border-secondary border-2"
+        className="mobile-image mb-3 border border-secondary border-2"
         src={example}
         alt=""
       />
