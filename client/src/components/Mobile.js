@@ -6,13 +6,13 @@ import MainFooter from "./shared/MainFooter";
 
 const Mobile = ({ setRenderDesktop }) => {
   return (
-    <div className="mobile text-light text-center">
+    <div className="mobile px-3 text-light text-center">
       <p className="brand mobile-brand text-center mb-3">
         <img src={logo} alt="Crypto-Painter" className="logo me-1" />
         CRYPTO-PAINTER
       </p>
       <img
-        className="mobile-image mb-3 border border-secondary border-2"
+        className="mobile-image mx-1 mb-3 border border-secondary border-2"
         src={example}
         alt=""
       />

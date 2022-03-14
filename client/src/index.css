@@ -168,8 +168,9 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .mobile {
-  width: 300px;
   position: absolute;
+  width: 100%;
+  max-width: 500px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -180,5 +181,6 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .mobile-image {
+  box-sizing: border-box;
   width: 100%;
 }
