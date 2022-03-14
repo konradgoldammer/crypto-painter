@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import logo from "../assets/web-design-brush.png";
 import example from "../assets/example.png";
 import MainFooter from "./shared/MainFooter";
 
-const Mobile = ({ setRenderDesktop }) => {
+const Mobile = ({ setRenderDesktop, socket }) => {
+  const [src, setSrc] = useState(null);
+
+  useEffect(() => {
+    // Get img src
+    socket.emit("mobile", (src) => {
+      console.log("afterit");
+      setSrc(src);
+    });
+  }, [socket]);
+
   return (
     <div className="mobile px-3 text-light text-center">
       <p className="brand mobile-brand text-center mb-3">
@@ -13,7 +23,7 @@ const Mobile = ({ setRenderDesktop }) => {
       </p>
       <img
         className="mobile-image mb-3 border border-secondary border-2"
-        src={example}
+        src={`'${src}'`}
         alt=""
       />
       <p className="text-start">
@@ -33,6 +43,7 @@ const Mobile = ({ setRenderDesktop }) => {
 
 Mobile.propTypes = {
   setRenderDesktop: PropTypes.func.isRequired,
+  socket: PropTypes.object.isRequired,
 };
 
 export default Mobile;

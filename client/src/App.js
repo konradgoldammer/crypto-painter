@@ -101,7 +101,7 @@ const App = () => {
   }, []);
 
   if (isMobile && !renderDesktop) {
-    return <Mobile setRenderDesktop={setRenderDesktop} />;
+    return <Mobile setRenderDesktop={setRenderDesktop} socket={socket} />;
   }
 
   return (
