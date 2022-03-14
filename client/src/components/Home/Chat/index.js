@@ -44,7 +44,17 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
     socket.removeListener("message");
 
     socket.on("message", (message) => {
+      const isDown =
+        Math.abs(
+          Math.round(scrollEl.current.scrollTop) -
+            (scrollEl.current.scrollHeight - 541) // Adjust to height of chat yo
+        ) <= 50;
+
       setMessages([...messages, newBubble(message)]);
+
+      if (isDown) {
+        scrollEl.current.scrollTop = scrollEl.current.scrollHeight;
+      }
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
