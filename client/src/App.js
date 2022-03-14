@@ -5,6 +5,7 @@ import Home from "./components/Home/index.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 import About from "./components/About";
+import Mobile from "./components/Mobile";
 import { io } from "socket.io-client";
 import { isMobile } from "react-device-detect";
 import { signStatement } from "./constants";
@@ -15,6 +16,7 @@ const socket = io("https://crypto-painter.herokuapp.com/"); // Add to dotenv may
 const App = () => {
   const [account, setAccount] = useState(null);
   const [token, setToken] = useState(null);
+  const [renderDesktop, setRenderDesktop] = useState(false);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -98,13 +100,8 @@ const App = () => {
     checkConnection();
   }, []);
 
-  if (isMobile) {
-    return (
-      <p className="text-light m-2">
-        This content is unavailable on mobile 😿. <br /> Go to our Twitter page
-        @crypt0painter if you want to find out who won the newest NFT.
-      </p>
-    );
+  if (isMobile && !renderDesktop) {
+    return <Mobile setRenderDesktop={setRenderDesktop} />;
   }
 
   return (
