@@ -62,7 +62,7 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
   }, [socket, messages]);
 
   const inputKeyDown = async (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && e.target.value) {
       setIsWaitingForServer(true);
 
       socket.emit(
