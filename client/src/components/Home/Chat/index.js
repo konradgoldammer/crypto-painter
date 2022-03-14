@@ -6,6 +6,7 @@ import Info from "./Info";
 
 const Chat = ({ socket, setAlert, setShowAlert, token }) => {
   const scrollEl = useRef(null);
+  const inputEl = useRef(null);
 
   const [paintersOnline, setPaintersOnline] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,6 +80,7 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
             setMessages([...messages, newBubble(message)]);
             e.target.value = "";
             scrollEl.current.scrollTop = scrollEl.current.scrollHeight;
+            inputEl.current.focus();
           }
         }
       );
@@ -126,6 +128,7 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
           }
           disabled={isLoading || isWaitingForServer}
           maxLength={100}
+          ref={inputEl}
         />
       </div>
     </div>
