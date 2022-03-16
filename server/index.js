@@ -175,8 +175,8 @@ let paintersOnline = 0;
         // Update totalMobileConnections
         log.totalMobileConnections++;
 
-        const image = getDataURL(image);
-        callback(image);
+        const src = getDataURL(image);
+        callback(src);
       });
 
       socket.on("image", (callback) => {
