@@ -28,6 +28,18 @@ instrument(io, {
 const defaultImage = { strokes: [], painters: [] };
 let image = defaultImage;
 
+const defaultLog = {
+  totalConnections: 0,
+  totalMobileConnections: 0,
+  painters: [],
+  messengers: [],
+  maxConections: 0,
+  totalStrokes: 0,
+  totalMessages: 0,
+  totalLogins: 0,
+};
+let log = defaultLog;
+
 let latestNFT = null;
 let latestWinnerHasConnected = false;
 
@@ -62,158 +74,164 @@ let paintersOnline = 0;
       image = { strokes, painters };
     }
 
-    // Listen for new connections
-    io.on("connection", (socket) => {
-      console.log(`New connection: ${socket.id}`);
+    // Find latest Log in database
+    const latestLog = await Log.findOne({}).sort({ timestamp: -1 });
 
-      paintersOnline++;
-      io.sockets.emit("painters_online", paintersOnline);
+    if (latestLog && latestLog)
+      // Listen for new connections
+      io.on("connection", (socket) => {
+        console.log(`New connection: ${socket.id}`);
 
-      socket.on("disconnect", () => {
-        paintersOnline--;
+        paintersOnline++;
         io.sockets.emit("painters_online", paintersOnline);
-      });
 
-      socket.on("chat", (callback) => {
-        callback({ content: "Welcome to the chat" });
-      });
+        socket.on("disconnect", () => {
+          paintersOnline--;
+          io.sockets.emit("painters_online", paintersOnline);
+        });
 
-      // Listen for new messages
-      socket.on("message", async (newMessage, callback) => {
-        const { token, content } = newMessage;
+        socket.on("chat", (callback) => {
+          callback({ content: "Welcome to the chat" });
+        });
 
-        // Validate token
-        let address;
+        // Listen for new messages
+        socket.on("message", async (newMessage, callback) => {
+          const { token, content } = newMessage;
 
-        try {
-          const result = await Web3Token.verify(token);
-          address = result.address;
-        } catch (error) {
-          console.log(error);
-        }
+          // Validate token
+          let address;
 
-        if (!address) {
-          console.log(`Socket ${socket.id} submittted invalid token`);
-          callback(
-            "Message not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
-          );
-          return;
-        }
+          try {
+            const result = await Web3Token.verify(token);
+            address = result.address;
+          } catch (error) {
+            console.log(error);
+          }
 
-        // Validate message
-        if (!content || typeof content !== "string" || content.length > 100) {
-          console.log(`Socket ${socket.id} submitted invalid message`);
-          callback(
-            "You submitted an invalid message. Try reloading your page."
-          );
-          return;
-        }
-
-        console.log(`New message from: ${socket.id}`);
-
-        const message = { content, address, timestamp: Date.now() };
-        callback(null, message);
-
-        // Send strokes to others
-        socket.broadcast.emit("message", message);
-      });
-
-      socket.on("mobile", (callback) => {
-        const image = getDataURL(image);
-        callback(image);
-      });
-
-      socket.on("image", (callback) => {
-        callback(image);
-      });
-
-      socket.on("login", (account, callback) => {
-        if (
-          account &&
-          !latestWinnerHasConnected &&
-          latestNFT &&
-          account.toLowerCase() === latestNFT.winner.toLowerCase()
-        ) {
-          latestWinnerHasConnected = true;
-          callback(latestNFT);
-        }
-        callback();
-      });
-
-      // Listen for new strokes
-      socket.on("stroke", async (newStroke, callback) => {
-        const { token, size, color, points } = newStroke;
-
-        // Validate token
-        let address;
-
-        try {
-          const result = await Web3Token.verify(token);
-          address = result.address;
-        } catch (error) {
-          console.log(error);
-        }
-
-        if (!address) {
-          console.log(`Socket ${socket.id} submittted invalid token`);
-          callback(
-            "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
-          );
-          return;
-        }
-
-        // Validate stroke
-        if (
-          !size ||
-          !color ||
-          !points ||
-          typeof size !== "number" ||
-          typeof color !== "string" ||
-          !Array.isArray(points) ||
-          size < 3 ||
-          size > 20 ||
-          !/^#[0-9A-F]{6}$/i.test(color) || // CHECK IF IS REAL HEX COLOR
-          points.filter((point) => {
-            return (
-              isNaN(point.x) ||
-              isNaN(point.y) ||
-              point.x < -20 ||
-              point.x > 740 ||
-              point.y < -20 ||
-              point.y > 596
+          if (!address) {
+            console.log(`Socket ${socket.id} submittted invalid token`);
+            callback(
+              "Message not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
             );
-          }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
-        ) {
-          console.log(`Socket ${socket.id} submitted invalid stroke`);
-          callback("You submitted an invalid stroke. Try reloading your page.");
-          return;
-        }
+            return;
+          }
 
-        if (points.length > 200) {
-          console.log(`Socket ${socket.id} submitted too long stroke`);
-          callback(
-            "Stroke not broadcasted because too long 😢. You should reload your page."
-          );
-          return;
-        }
+          // Validate message
+          if (!content || typeof content !== "string" || content.length > 100) {
+            console.log(`Socket ${socket.id} submitted invalid message`);
+            callback(
+              "You submitted an invalid message. Try reloading your page."
+            );
+            return;
+          }
 
-        // Add address to painters if not included already
-        if (
-          !image.painters.find(
-            (painter) => painter.toLowerCase() === address.toLowerCase()
-          )
-        ) {
-          image.painters.push(address);
-        }
+          console.log(`New message from: ${socket.id}`);
 
-        console.log(`New stroke from: ${socket.id}`);
-        image.strokes.push(newStroke);
-        callback();
+          const message = { content, address, timestamp: Date.now() };
+          callback(null, message);
 
-        // Send strokes to others
-        socket.broadcast.emit("stroke", newStroke);
+          // Send strokes to others
+          socket.broadcast.emit("message", message);
+        });
+
+        socket.on("mobile", (callback) => {
+          const image = getDataURL(image);
+          callback(image);
+        });
+
+        socket.on("image", (callback) => {
+          callback(image);
+        });
+
+        socket.on("login", (account, callback) => {
+          if (
+            account &&
+            !latestWinnerHasConnected &&
+            latestNFT &&
+            account.toLowerCase() === latestNFT.winner.toLowerCase()
+          ) {
+            latestWinnerHasConnected = true;
+            callback(latestNFT);
+          }
+          callback();
+        });
+
+        // Listen for new strokes
+        socket.on("stroke", async (newStroke, callback) => {
+          const { token, size, color, points } = newStroke;
+
+          // Validate token
+          let address;
+
+          try {
+            const result = await Web3Token.verify(token);
+            address = result.address;
+          } catch (error) {
+            console.log(error);
+          }
+
+          if (!address) {
+            console.log(`Socket ${socket.id} submittted invalid token`);
+            callback(
+              "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+            );
+            return;
+          }
+
+          // Validate stroke
+          if (
+            !size ||
+            !color ||
+            !points ||
+            typeof size !== "number" ||
+            typeof color !== "string" ||
+            !Array.isArray(points) ||
+            size < 3 ||
+            size > 20 ||
+            !/^#[0-9A-F]{6}$/i.test(color) || // CHECK IF IS REAL HEX COLOR
+            points.filter((point) => {
+              return (
+                isNaN(point.x) ||
+                isNaN(point.y) ||
+                point.x < -20 ||
+                point.x > 740 ||
+                point.y < -20 ||
+                point.y > 596
+              );
+            }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
+          ) {
+            console.log(`Socket ${socket.id} submitted invalid stroke`);
+            callback(
+              "You submitted an invalid stroke. Try reloading your page."
+            );
+            return;
+          }
+
+          if (points.length > 200) {
+            console.log(`Socket ${socket.id} submitted too long stroke`);
+            callback(
+              "Stroke not broadcasted because too long 😢. You should reload your page."
+            );
+            return;
+          }
+
+          // Add address to painters if not included already
+          if (
+            !image.painters.find(
+              (painter) => painter.toLowerCase() === address.toLowerCase()
+            )
+          ) {
+            image.painters.push(address);
+          }
+
+          console.log(`New stroke from: ${socket.id}`);
+          image.strokes.push(newStroke);
+          callback();
+
+          // Send strokes to others
+          socket.broadcast.emit("stroke", newStroke);
+        });
       });
-    });
 
     // Save image every interval
     setIntervalAsync(async () => {
@@ -327,13 +345,27 @@ let paintersOnline = 0;
         `Added ${image.final ? "final" : "non-final"} image to database`
       );
 
-      // Reset image
       if (image.final) {
+        // Reset image
         image = { strokes: [], painters: [] };
 
         io.sockets.emit("reset");
 
         console.log("Image has been reset");
+
+        // Reset log
+        log = {
+          totalConnections: 0,
+          totalMobileConnections: 0,
+          painters: [],
+          messengers: [],
+          maxConnections: 0,
+          totalStrokes: 0,
+          totalMessages: 0,
+          totalLogins: 0,
+        };
+
+        console.log("Log has been reset");
       }
     }, config.get("saveInterval"));
   } catch (error) {

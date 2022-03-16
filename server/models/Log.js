@@ -12,6 +12,7 @@ const Log = mongoose.model(
     totalStrokes: { type: Number, required: true },
     totalMessages: { type: Number, required: true },
     totalLogins: { type: Number, required: true },
+    final: {type: Boolean, default: false}
   })
 );
 
