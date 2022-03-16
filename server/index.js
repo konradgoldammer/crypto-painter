@@ -8,6 +8,7 @@ const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
 const Image = require("./models/Image.js");
+const Log = require("./models/Log.js");
 const NFT = require("./models/NFT.js");
 const { Web3Storage, getFilesFromPath } = require("web3.storage");
 

@@ -4,7 +4,8 @@ const Log = mongoose.model(
   "Log",
   new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
-    connections: { type: Array, required: true },
+    totalConnections: { type: Number, required: true },
+    totalMobileConnections: { type: Number, required: true },
     painters: { type: Array, required: true },
     messengers: {type: Array, required: true}
     maxConnections: { type: Number, required: true },
