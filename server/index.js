@@ -392,7 +392,7 @@ let paintersOnline = 0;
       );
 
       // Add log to database even if not final
-      const latestLog = await Log.find({}).sort({ timestamp: -1 });
+      const latestLog = await Log.findOne({}).sort({ timestamp: -1 });
       const isFirstLog = !latestLog || latestLog.final;
 
       if (isFirstLog) {
