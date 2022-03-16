@@ -308,7 +308,7 @@ let paintersOnline = 0;
         // Upload Image to IPFS
         const fileImage = await getFilesFromPath(pathImage);
         const cidImage = await storage.put(fileImage);
-        const urlImage = `ipfs://${cidImage}`;
+        const urlImage = `ipfs://${cidImage}/image.png`;
         console.log(`Image added to IPFS with cid: ${cidImage}`);
 
         // Create Metadata
