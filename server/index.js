@@ -33,7 +33,7 @@ const defaultLog = {
   totalMobileConnections: 0,
   painters: [],
   messengers: [],
-  maxConections: 0,
+  maxConnections: 0,
   totalStrokes: 0,
   totalMessages: 0,
   totalLogins: 0,
@@ -77,161 +77,206 @@ let paintersOnline = 0;
     // Find latest Log in database
     const latestLog = await Log.findOne({}).sort({ timestamp: -1 });
 
-    if (latestLog && latestLog)
-      // Listen for new connections
-      io.on("connection", (socket) => {
-        console.log(`New connection: ${socket.id}`);
+    if (latestLog && !latestLog.final) {
+      const {
+        totalConnections,
+        totalMobileConnections,
+        painters,
+        messengers,
+        maxConnections,
+        totalStrokes,
+        totalMessages,
+        totalLogins,
+      } = latestLog.toObject();
+      log = {
+        totalConnections,
+        totalMobileConnections,
+        painters,
+        messengers,
+        maxConnections,
+        totalStrokes,
+        totalMessages,
+        totalLogins,
+      };
+    }
+    // Listen for new connections
+    io.on("connection", (socket) => {
+      console.log(`New connection: ${socket.id}`);
 
-        paintersOnline++;
+      paintersOnline++;
+      io.sockets.emit("painters_online", paintersOnline);
+
+      // Update total connections
+      log.totalConnections++;
+
+      // Check if there is new maxConnections
+      if (paintersOnline > log.maxConnections) {
+        log.maxConnections = paintersOnline;
+      }
+
+      socket.on("disconnect", () => {
+        paintersOnline--;
         io.sockets.emit("painters_online", paintersOnline);
-
-        socket.on("disconnect", () => {
-          paintersOnline--;
-          io.sockets.emit("painters_online", paintersOnline);
-        });
-
-        socket.on("chat", (callback) => {
-          callback({ content: "Welcome to the chat" });
-        });
-
-        // Listen for new messages
-        socket.on("message", async (newMessage, callback) => {
-          const { token, content } = newMessage;
-
-          // Validate token
-          let address;
-
-          try {
-            const result = await Web3Token.verify(token);
-            address = result.address;
-          } catch (error) {
-            console.log(error);
-          }
-
-          if (!address) {
-            console.log(`Socket ${socket.id} submittted invalid token`);
-            callback(
-              "Message not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
-            );
-            return;
-          }
-
-          // Validate message
-          if (!content || typeof content !== "string" || content.length > 100) {
-            console.log(`Socket ${socket.id} submitted invalid message`);
-            callback(
-              "You submitted an invalid message. Try reloading your page."
-            );
-            return;
-          }
-
-          console.log(`New message from: ${socket.id}`);
-
-          const message = { content, address, timestamp: Date.now() };
-          callback(null, message);
-
-          // Send strokes to others
-          socket.broadcast.emit("message", message);
-        });
-
-        socket.on("mobile", (callback) => {
-          const image = getDataURL(image);
-          callback(image);
-        });
-
-        socket.on("image", (callback) => {
-          callback(image);
-        });
-
-        socket.on("login", (account, callback) => {
-          if (
-            account &&
-            !latestWinnerHasConnected &&
-            latestNFT &&
-            account.toLowerCase() === latestNFT.winner.toLowerCase()
-          ) {
-            latestWinnerHasConnected = true;
-            callback(latestNFT);
-          }
-          callback();
-        });
-
-        // Listen for new strokes
-        socket.on("stroke", async (newStroke, callback) => {
-          const { token, size, color, points } = newStroke;
-
-          // Validate token
-          let address;
-
-          try {
-            const result = await Web3Token.verify(token);
-            address = result.address;
-          } catch (error) {
-            console.log(error);
-          }
-
-          if (!address) {
-            console.log(`Socket ${socket.id} submittted invalid token`);
-            callback(
-              "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
-            );
-            return;
-          }
-
-          // Validate stroke
-          if (
-            !size ||
-            !color ||
-            !points ||
-            typeof size !== "number" ||
-            typeof color !== "string" ||
-            !Array.isArray(points) ||
-            size < 3 ||
-            size > 20 ||
-            !/^#[0-9A-F]{6}$/i.test(color) || // CHECK IF IS REAL HEX COLOR
-            points.filter((point) => {
-              return (
-                isNaN(point.x) ||
-                isNaN(point.y) ||
-                point.x < -20 ||
-                point.x > 740 ||
-                point.y < -20 ||
-                point.y > 596
-              );
-            }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
-          ) {
-            console.log(`Socket ${socket.id} submitted invalid stroke`);
-            callback(
-              "You submitted an invalid stroke. Try reloading your page."
-            );
-            return;
-          }
-
-          if (points.length > 200) {
-            console.log(`Socket ${socket.id} submitted too long stroke`);
-            callback(
-              "Stroke not broadcasted because too long 😢. You should reload your page."
-            );
-            return;
-          }
-
-          // Add address to painters if not included already
-          if (
-            !image.painters.find(
-              (painter) => painter.toLowerCase() === address.toLowerCase()
-            )
-          ) {
-            image.painters.push(address);
-          }
-
-          console.log(`New stroke from: ${socket.id}`);
-          image.strokes.push(newStroke);
-          callback();
-
-          // Send strokes to others
-          socket.broadcast.emit("stroke", newStroke);
-        });
       });
+
+      socket.on("chat", (callback) => {
+        callback({ content: "Welcome to the chat" });
+      });
+
+      // Listen for new messages
+      socket.on("message", async (newMessage, callback) => {
+        const { token, content } = newMessage;
+
+        // Validate token
+        let address;
+
+        try {
+          const result = await Web3Token.verify(token);
+          address = result.address.toLowerCase();
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (!address) {
+          console.log(`Socket ${socket.id} submittted invalid token`);
+          callback(
+            "Message not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+          );
+          return;
+        }
+
+        // Validate message
+        if (!content || typeof content !== "string" || content.length > 100) {
+          console.log(`Socket ${socket.id} submitted invalid message`);
+          callback(
+            "You submitted an invalid message. Try reloading your page."
+          );
+          return;
+        }
+
+        console.log(`New message from: ${socket.id}`);
+
+        const message = { content, address, timestamp: Date.now() };
+        callback(null, message);
+
+        // Send strokes to others
+        socket.broadcast.emit("message", message);
+
+        // Update totalMessages
+        log.totalMessages++;
+
+        // Add address to messengers in log
+        if (!log.messengers.includes(message.address)) {
+          log.messengers.push(address);
+        }
+      });
+
+      socket.on("mobile", (callback) => {
+        // Update totalMobileConnections
+        log.totalMobileConnections++;
+
+        const image = getDataURL(image);
+        callback(image);
+      });
+
+      socket.on("image", (callback) => {
+        callback(image);
+      });
+
+      socket.on("login", (account, callback) => {
+        if (
+          account &&
+          !latestWinnerHasConnected &&
+          latestNFT &&
+          account.toLowerCase() === latestNFT.winner.toLowerCase()
+        ) {
+          latestWinnerHasConnected = true;
+          callback(latestNFT);
+        }
+        callback();
+
+        // Update totalLogins
+        log.totalLogins++;
+      });
+
+      // Listen for new strokes
+      socket.on("stroke", async (newStroke, callback) => {
+        const { token, size, color, points } = newStroke;
+
+        // Validate token
+        let address;
+
+        try {
+          const result = await Web3Token.verify(token);
+          address = result.address.toLowerCase();
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (!address) {
+          console.log(`Socket ${socket.id} submittted invalid token`);
+          callback(
+            "Stroke not broadcasted because you submitted an invalid token. Try reloading your page and logging in and out of your MetaMask account."
+          );
+          return;
+        }
+
+        // Validate stroke
+        if (
+          !size ||
+          !color ||
+          !points ||
+          typeof size !== "number" ||
+          typeof color !== "string" ||
+          !Array.isArray(points) ||
+          size < 3 ||
+          size > 20 ||
+          !/^#[0-9A-F]{6}$/i.test(color) || // CHECK IF IS REAL HEX COLOR
+          points.filter((point) => {
+            return (
+              isNaN(point.x) ||
+              isNaN(point.y) ||
+              point.x < -20 ||
+              point.x > 740 ||
+              point.y < -20 ||
+              point.y > 596
+            );
+          }).length !== 0 // CHECK IF EVERY POINT HAS X AND Y PROPERTY
+        ) {
+          console.log(`Socket ${socket.id} submitted invalid stroke`);
+          callback("You submitted an invalid stroke. Try reloading your page.");
+          return;
+        }
+
+        if (points.length > 200) {
+          console.log(`Socket ${socket.id} submitted too long stroke`);
+          callback(
+            "Stroke not broadcasted because too long 😢. You should reload your page."
+          );
+          return;
+        }
+
+        // Add address to painters if not included already
+        if (!image.painters.includes(address)) {
+          image.painters.push(address);
+        }
+
+        console.log(`New stroke from: ${socket.id}`);
+        image.strokes.push(newStroke);
+        callback();
+
+        // Send strokes to others
+        socket.broadcast.emit("stroke", newStroke);
+
+        // Update totalStrokes
+        log.totalStrokes++;
+
+        // Add address to painters in log
+        if (!log.painters.includes(address)) {
+          log.painters.push(address);
+        }
+      });
+    });
 
     // Save image every interval
     setIntervalAsync(async () => {
@@ -249,6 +294,7 @@ let paintersOnline = 0;
         Date.now() - millisInDay > latestNFT.timestamp.getTime()
       ) {
         image.final = true;
+        log.final = true;
 
         // Create Image
         const dataURL = getDataURL(image);
@@ -344,6 +390,18 @@ let paintersOnline = 0;
       console.log(
         `Added ${image.final ? "final" : "non-final"} image to database`
       );
+
+      // Add log to database even if not final
+      const latestLog = await Log.find({}).sort({ timestamp: -1 });
+      const isFirstLog = !latestLog || latestLog.final;
+
+      if (isFirstLog) {
+        await new Log(log).save();
+        console.log("Added new log to database");
+      } else {
+        await Log.findByIdAndUpdate(latestLog._id, log);
+        console.log("Updated log in database");
+      }
 
       if (image.final) {
         // Reset image
