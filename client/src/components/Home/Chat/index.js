@@ -35,8 +35,9 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
       setPaintersOnline(paintersOnline);
     });
 
-    socket.emit("chat", (info) => {
-      setMessages([<Info key={Date.now()} info={info} />]);
+    socket.emit("chat", ({ content, paintersOnline }) => {
+      setMessages([<Info key={Date.now()} info={{ content }} />]);
+      setPaintersOnline(paintersOnline);
       setIsLoading(false);
     });
   }, [socket]);

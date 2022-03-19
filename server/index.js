@@ -120,7 +120,7 @@ let paintersOnline = 0;
       });
 
       socket.on("chat", (callback) => {
-        callback({ content: "Welcome to the chat" });
+        callback({ content: "Welcome to the chat", paintersOnline });
       });
 
       // Listen for new messages
