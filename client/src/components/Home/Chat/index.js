@@ -31,7 +31,7 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
       setIsLoading(false);
     });
 
-    socket.on("painters_online", (paintersOnline) => {
+    socket.on("new_connection", (paintersOnline) => {
       setPaintersOnline(paintersOnline);
     });
 

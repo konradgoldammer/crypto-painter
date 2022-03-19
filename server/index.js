@@ -104,7 +104,7 @@ let paintersOnline = 0;
       console.log(`New connection: ${socket.id}`);
 
       paintersOnline++;
-      io.sockets.emit("painters_online", paintersOnline);
+      io.sockets.emit("new_connection", paintersOnline);
 
       // Update total connections
       log.totalConnections++;
@@ -116,7 +116,7 @@ let paintersOnline = 0;
 
       socket.on("disconnect", () => {
         paintersOnline--;
-        io.sockets.emit("painters_online", paintersOnline);
+        io.sockets.emit("new_connection", paintersOnline);
       });
 
       socket.on("chat", (callback) => {
