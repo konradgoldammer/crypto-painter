@@ -4,7 +4,7 @@ const MainFooter = () => {
   return (
     <div className="text-center text-secondary mt-3">
       <p>
-        Developed by{" "}
+        Created by{" "}
         <a
           href="https://www.instagram.com/konradgoldammer/"
           className="text-decoration-none hover-underline"
