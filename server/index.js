@@ -180,7 +180,7 @@ let paintersOnline = 0;
       });
 
       socket.on("image", (callback) => {
-        callback(image);
+        callback(image, latestNFT.tokenId + 1);
       });
 
       socket.on("login", (account, callback) => {
