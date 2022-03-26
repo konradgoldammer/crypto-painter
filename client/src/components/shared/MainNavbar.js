@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Navbar, NavbarBrand, NavbarText } from "reactstrap";
+import { NavbarBrand, NavbarText } from "reactstrap";
 import { Link } from "react-router-dom";
 import loading from "../../assets/loading.gif";
 import Web3 from "web3";
