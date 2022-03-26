@@ -62,6 +62,10 @@ h3 {
   font-family: "Orbitron", sans-serif;
 }
 
+.brand:hover {
+  opacity: 0.8;
+}
+
 .chat-container {
   width: 250px;
   height: fit-content !important;
