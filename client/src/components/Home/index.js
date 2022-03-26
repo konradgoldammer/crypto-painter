@@ -343,7 +343,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
                 )}
               </div>
               <p className="m-0 blockchain-info bg-secondary rounded-bottom p-1 text-light position-relative">
-                Smart contract{" "}
+                Contract{" "}
                 <a
                   href="https://bscscan.com/address/0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca/"
                   className="text-decoration-none hover-underline text-light"
