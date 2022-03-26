@@ -229,19 +229,30 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
 
   return (
     <div>
-      <MainNavbar
-        account={account}
-        setAccount={setAccount}
-        setAlert={setAlert}
-        setShowAlert={setShowAlert}
-        setToken={setToken}
-      />
       <Alert
         content={alert}
         showAlert={showAlert}
         setShowAlert={setShowAlert}
         setAlert={setAlert}
       />
+      <div className="d-flex justify-content-center">
+        <div className="crypto-container">
+          <MainNavbar
+            account={account}
+            setAccount={setAccount}
+            setAlert={setAlert}
+            setShowAlert={setShowAlert}
+            setToken={setToken}
+          />
+          <p className="text-light m-0">
+            This is a 720x576 pixel canvas. Every day at midnight (GMT) the
+            canvas is reset and the Crypto-Painting created is gifted as an NFT
+            to a random contributor to the painting (anyone who painted at least
+            1 stroke is considered a contributor). Connect your wallet to start
+            painting.
+          </p>
+        </div>
+      </div>
       <div className="d-flex justify-content-center mt-3">
         <div className="draw-container">
           <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />

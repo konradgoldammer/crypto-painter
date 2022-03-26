@@ -2,8 +2,8 @@ import React from "react";
 
 const MainFooter = () => {
   return (
-    <div className="text-center text-secondary mt-3">
-      <p>
+    <div className="text-center text-secondary my-3">
+      <p className="m-0">
         Created by{" "}
         <a
           href="https://www.instagram.com/konradgoldammer/"

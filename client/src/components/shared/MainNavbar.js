@@ -104,63 +104,61 @@ const MainNavbar = ({
   };
 
   return (
-    <Navbar color="dark" dark expand="md">
-      <div className="container d-flex justify-content-between">
-        <div className="d-flex">
-          <NavbarBrand tag={Link} to="/" className="brand">
-            <img src={logo} alt="Crypto-Painter" className="logo me-1" />
-            CRYPTO-PAINTER
-          </NavbarBrand>
-          <Link
-            className={`p-2 text-decoration-none ${
-              window.location.pathname === "/about"
-                ? "text-muted link-disabled"
-                : "text-light hover-underline"
-            }`}
-            to="/about"
-          >
-            About
-          </Link>
-          <Link
-            className={`p-2 text-decoration-none ${
-              window.location.pathname === "/gallery"
-                ? "text-muted link-disabled"
-                : "text-light hover-underline"
-            }`}
-            to="#"
-            onClick={() => {
-              setAlert(
-                "Gallery is coming soon... 🤗. Follow @crypt0painter on Twitter for updates."
-              );
-              setShowAlert(true);
-            }}
-          >
-            Gallery
-          </Link>
-        </div>
-        {account ? (
-          <NavbarText>{account}</NavbarText>
-        ) : (
-          <div>
-            <button
-              className="btn btn-primary"
-              onClick={enableEth}
-              disabled={isConnecting}
-            >
-              Connect to Wallet
-            </button>
-            {isConnecting && (
-              <img
-                src={loading}
-                alt="connecting..."
-                title="connecting..."
-                className="ms-2 loading"
-              />
-            )}
-          </div>
-        )}
+    <div className="d-flex justify-content-between py-2">
+      <div className="d-flex">
+        <NavbarBrand tag={Link} to="/" className="brand text-light">
+          <img src={logo} alt="Crypto-Painter" className="logo me-1" />
+          CRYPTO-PAINTER
+        </NavbarBrand>
+        <Link
+          className={`p-2 text-decoration-none ${
+            window.location.pathname === "/about"
+              ? "text-muted link-disabled"
+              : "text-light hover-underline"
+          }`}
+          to="/about"
+        >
+          About
+        </Link>
+        <Link
+          className={`p-2 text-decoration-none ${
+            window.location.pathname === "/gallery"
+              ? "text-muted link-disabled"
+              : "text-light hover-underline"
+          }`}
+          to="#"
+          onClick={() => {
+            setAlert(
+              "Gallery is coming soon... 🤗. Follow @crypt0painter on Twitter for updates."
+            );
+            setShowAlert(true);
+          }}
+        >
+          Gallery
+        </Link>
       </div>
-    </Navbar>
+      {account ? (
+        <NavbarText className="text-secondary">{account}</NavbarText>
+      ) : (
+        <div>
+          <button
+            className="btn btn-primary"
+            onClick={enableEth}
+            disabled={isConnecting}
+          >
+            Connect to Wallet
+          </button>
+          {isConnecting && (
+            <img
+              src={loading}
+              alt="connecting..."
+              title="connecting..."
+              className="ms-2 loading"
+            />
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
