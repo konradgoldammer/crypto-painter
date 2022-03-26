@@ -104,7 +104,7 @@ const MainNavbar = ({
   };
 
   return (
-    <div className="d-flex justify-content-between py-2">
+    <div className="d-flex justify-content-between pt-3">
       <div className="d-flex">
         <NavbarBrand tag={Link} to="/" className="brand text-light">
           <img src={logo} alt="Crypto-Painter" className="logo me-1" />

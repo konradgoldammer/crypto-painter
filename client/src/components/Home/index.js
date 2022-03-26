@@ -268,12 +268,12 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             setShowAlert={setShowAlert}
             setToken={setToken}
           />
-          <p className="text-light m-0">
+          <p className="text-light m-0 mt-2">
             This is a 720x576 pixel canvas. Every day at midnight (GMT) the
             canvas is reset and the Crypto-Painting created is gifted as an NFT
             to a random contributor to the painting (anyone who painted at least
             1 stroke is considered a contributor). Connect your wallet to start
-            painting. <br /> At the moment{" "}
+            painting. <br /> So far{" "}
             <span className="text-primary">
               {totalPainters === 1
                 ? `${totalPainters} person`
@@ -281,7 +281,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             </span>{" "}
             {totalPainters === 1 ? "has" : "have"} contributed painting{" "}
             <span className="text-primary">CryptoPainting #{nextTokenId}</span>.
-            The canvas will reset and the painting given away in:{" "}
+            The canvas will reset and the painting will be gifted in{" "}
             {
               <Countdown
                 date={nextResetDate}
@@ -290,7 +290,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
                     return <span className="text-success">a moment</span>;
                   } else {
                     return (
-                      <span className="text-danger">
+                      <span className="text-primary">
                         {hours < 10 ? `0${hours}` : hours}:
                         {minutes < 10 ? `0${minutes}` : minutes}:
                         {seconds < 10 ? `0${seconds}` : seconds}
