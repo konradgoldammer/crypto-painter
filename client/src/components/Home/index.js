@@ -26,7 +26,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const [queuedStrokes, setQueuedStrokes] = useState([]);
   const [nextTokenId, setNextTokenId] = useState(0);
   const [totalPainters, setTotalPainters] = useState(0);
-  const [nextResetDate, setNextResetDate] = useState(Date.now());
+  const [nextResetDate, setNextResetDate] = useState(Date.now() + 86400000);
 
   useEffect(() => {
     // Set page title
@@ -44,7 +44,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
 
       let date = new Date();
       date.setUTCHours(24, 0, 0, 0);
-      setNextResetDate(date.getTime());
+      setNextResetDate(date);
     });
 
     // Wait for reset
