@@ -9,6 +9,7 @@ import Menu from "./Menu";
 import Web3Token from "web3-token";
 import { signStatement } from "../../constants";
 import { SiBinance } from "react-icons/si";
+import Countdown from "react-countdown";
 
 const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const canvasRef = useRef(null);
@@ -25,6 +26,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const [queuedStrokes, setQueuedStrokes] = useState([]);
   const [nextTokenId, setNextTokenId] = useState(0);
   const [totalPainters, setTotalPainters] = useState(0);
+  const [nextResetDate, setNextResetDate] = useState(Date.now());
 
   useEffect(() => {
     // Set page title
@@ -39,6 +41,10 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       setIsUpdatingCanvas(false);
       setNextTokenId(nextTokenId);
       setTotalPainters(image.painters.length);
+
+      let date = new Date();
+      date.setUTCHours(24, 0, 0, 0);
+      setNextResetDate(date.getTime());
     });
 
     // Wait for reset
@@ -55,6 +61,10 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       );
       setShowAlert(true);
       setNextTokenId(nextTokenId + 1);
+
+      let date = new Date();
+      date.setUTCHours(24, 0, 0, 0);
+      setNextResetDate(date.getTime());
     });
 
     socket.on("disconnect", () => {
@@ -263,7 +273,34 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             canvas is reset and the Crypto-Painting created is gifted as an NFT
             to a random contributor to the painting (anyone who painted at least
             1 stroke is considered a contributor). Connect your wallet to start
-            painting.
+            painting. <br /> At the moment{" "}
+            <span className="text-primary">
+              {totalPainters === 1
+                ? `${totalPainters} person`
+                : `${totalPainters} people`}
+            </span>{" "}
+            {totalPainters === 1 ? "has" : "have"} contributed painting{" "}
+            <span className="text-primary">CryptoPainting #{nextTokenId}</span>.
+            The canvas will reset and the painting given away in:{" "}
+            {
+              <Countdown
+                date={nextResetDate}
+                renderer={({ hours, minutes, seconds, completed }) => {
+                  if (completed) {
+                    return <span className="text-success">a moment</span>;
+                  } else {
+                    return (
+                      <span className="text-danger">
+                        {hours < 10 ? `0${hours}` : hours}:
+                        {minutes < 10 ? `0${minutes}` : minutes}:
+                        {seconds < 10 ? `0${seconds}` : seconds}
+                      </span>
+                    );
+                  }
+                }}
+              />
+            }
+            .
           </p>
 
           <div className="d-flex justify-content-center mt-3">
