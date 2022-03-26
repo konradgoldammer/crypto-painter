@@ -46,10 +46,11 @@ const Chat = ({ socket, setAlert, setShowAlert, token }) => {
     socket.removeListener("message");
 
     socket.on("message", (message) => {
+      console.log(scrollEl.current.scrollTop, scrollEl.current.scrollHeight);
       const isDown =
         Math.abs(
           Math.round(scrollEl.current.scrollTop) -
-            (scrollEl.current.scrollHeight - 541) // Adjust to height of chat yo
+            (scrollEl.current.scrollHeight - 568) // Adjust to height of chat yo
         ) <= 50;
 
       setMessages([...messages, newBubble(message)]);
