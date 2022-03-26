@@ -93,7 +93,7 @@ h3 {
 }
 
 .chat-body {
-  height: 576px;
+  height: 604px; /* 576px canvas + 28px blockchain info */
   box-sizing: content-box;
 }
 
@@ -191,4 +191,18 @@ input[type="color"]::-webkit-color-swatch {
 
 .crypto-container {
   width: 986px;
+}
+
+.text-binance {
+  color: #f0b90b;
+}
+
+.blockchain-info {
+  height: 32px;
+}
+
+.blockchain-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }

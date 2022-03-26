@@ -7,7 +7,7 @@ const MainFooter = () => {
         Created by{" "}
         <a
           href="https://www.instagram.com/konradgoldammer/"
-          className="text-decoration-none hover-underline"
+          className="text-decoration-none hover-underline text-primary"
         >
           Konrad Goldammer
         </a>{" "}

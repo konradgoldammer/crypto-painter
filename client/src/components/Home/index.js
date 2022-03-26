@@ -8,6 +8,7 @@ import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
 import Web3Token from "web3-token";
 import { signStatement } from "../../constants";
+import { SiBinance } from "react-icons/si";
 
 const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const canvasRef = useRef(null);
@@ -251,52 +252,69 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             1 stroke is considered a contributor). Connect your wallet to start
             painting.
           </p>
-        </div>
-      </div>
-      <div className="d-flex justify-content-center mt-3">
-        <div className="draw-container">
-          <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
-          <div className="position-relative">
-            <canvas
-              onMouseDown={
-                token && !isUpdatingCanvas && !isWaitingForServer
-                  ? startDrawing
-                  : showNotAllowedAlert
-              }
-              onMouseUp={
-                token && !isUpdatingCanvas && !isWaitingForServer
-                  ? endDrawing
-                  : null
-              }
-              onMouseMove={
-                token && !isUpdatingCanvas && !isWaitingForServer ? draw : null
-              }
-              onMouseOut={
-                token && !isUpdatingCanvas && !isWaitingForServer
-                  ? endDrawing
-                  : null
-              }
-              ref={canvasRef}
-              width={`720px`}
-              height={`576px`}
-              className="draw-area bg-white border border-secondary border-4"
+
+          <div className="d-flex justify-content-center mt-3">
+            <div className="draw-container">
+              <Menu setLineColor={setLineColor} setLineWidth={setLineWidth} />
+              <div className="position-relative">
+                <canvas
+                  onMouseDown={
+                    token && !isUpdatingCanvas && !isWaitingForServer
+                      ? startDrawing
+                      : showNotAllowedAlert
+                  }
+                  onMouseUp={
+                    token && !isUpdatingCanvas && !isWaitingForServer
+                      ? endDrawing
+                      : null
+                  }
+                  onMouseMove={
+                    token && !isUpdatingCanvas && !isWaitingForServer
+                      ? draw
+                      : null
+                  }
+                  onMouseOut={
+                    token && !isUpdatingCanvas && !isWaitingForServer
+                      ? endDrawing
+                      : null
+                  }
+                  ref={canvasRef}
+                  width={`720px`}
+                  height={`576px`}
+                  className="draw-area bg-white border border-secondary border-4 border-bottom-0"
+                />
+                {isUpdatingCanvas && (
+                  <img
+                    src={loading}
+                    alt="connecting..."
+                    title="connecting..."
+                    className="loading center"
+                  />
+                )}
+              </div>
+              <p className="m-0 blockchain-info bg-secondary rounded-bottom p-1 text-light position-relative">
+                Smart contract{" "}
+                <a
+                  href="https://bscscan.com/address/0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca/"
+                  className="text-decoration-none hover-underline text-light"
+                >
+                  0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca
+                </a>{" "}
+                on{" "}
+                <strong className="text-binance">
+                  BINANCE SMART CHAIN{" "}
+                  <SiBinance className="blockchain-icon ms-1" />
+                </strong>
+              </p>
+            </div>
+            <Chat
+              socket={socket}
+              setAlert={setAlert}
+              setShowAlert={setShowAlert}
+              token={token}
             />
-            {isUpdatingCanvas && (
-              <img
-                src={loading}
-                alt="connecting..."
-                title="connecting..."
-                className="loading center"
-              />
-            )}
           </div>
         </div>
-        <Chat
-          socket={socket}
-          setAlert={setAlert}
-          setShowAlert={setShowAlert}
-          token={token}
-        />
       </div>
       <MainFooter />
     </div>
