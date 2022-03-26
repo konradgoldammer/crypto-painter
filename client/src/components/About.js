@@ -30,7 +30,7 @@ const About = ({ title, account, setAccount, setToken }) => {
             setShowAlert={setShowAlert}
             setToken={setToken}
           />
-          <div className="text-light">
+          <div className="text-light mt-1">
             <h3 className="text-center">WHAT IS CRYPTO-PAINTER?</h3>
             <p>
               Crypto-Painter is a unique NFT project launched in March 2022.
