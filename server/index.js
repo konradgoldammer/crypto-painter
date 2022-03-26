@@ -257,16 +257,17 @@ let paintersOnline = 0;
         }
 
         // Add address to painters if not included already
-        if (!image.painters.includes(address)) {
+        const isNewPainter = !image.painters.includes(address);
+        if (isNewPainter) {
           image.painters.push(address);
         }
 
         console.log(`New stroke from: ${socket.id}`);
         image.strokes.push(newStroke);
-        callback();
+        callback(null, isNewPainter);
 
         // Send strokes to others
-        socket.broadcast.emit("stroke", newStroke);
+        socket.broadcast.emit("stroke", newStroke, isNewPainter);
 
         // Update totalStrokes
         log.totalStrokes++;

@@ -24,6 +24,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const [currentStroke, setCurrentStroke] = useState(null);
   const [queuedStrokes, setQueuedStrokes] = useState([]);
   const [nextTokenId, setNextTokenId] = useState(0);
+  const [totalPainters, setTotalPainters] = useState(0);
 
   useEffect(() => {
     // Set page title
@@ -37,6 +38,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
       image.strokes.forEach((stroke) => drawStroke(stroke));
       setIsUpdatingCanvas(false);
       setNextTokenId(nextTokenId);
+      setTotalPainters(image.painters.length);
     });
 
     // Wait for reset
@@ -71,8 +73,12 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     socket.removeListener("stroke");
 
     // Wait for new strokes from others
-    socket.on("stroke", (stroke) => {
+    socket.on("stroke", (stroke, isNewPainter) => {
       console.log("New other stroke");
+
+      if (isNewPainter) {
+        setTotalPainters(totalPainters + 1);
+      }
 
       if (!isDrawing) {
         drawStroke(stroke);
@@ -149,10 +155,14 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
 
     // Send stroke to server socket
     setIsWaitingForServer(true);
-    socket.emit("stroke", currentStroke, (error) => {
+    socket.emit("stroke", currentStroke, (error, isNewPainter) => {
       if (error) {
         setAlert(error);
         setShowAlert(true);
+      }
+
+      if (isNewPainter) {
+        setTotalPainters(totalPainters + 1);
       }
 
       setIsWaitingForServer(false);
