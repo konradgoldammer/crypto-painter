@@ -35,9 +35,9 @@ const About = ({ title, account, setAccount, setToken }) => {
           website acts as a collaborative painting application that allows
           anyone to participate in drawing a picture together online and in real
           time. Every day at midnight (Greenwich Mean Time) the canvas is reset
-          and the Crypto-Painting created is gifted to a random contributor to
-          the painting (anyone who painted at least 1 stroke is considered a
-          contributor).
+          and the Crypto-Painting created is gifted as an NFT to a random
+          contributor to the painting (anyone who painted at least 1 stroke is
+          considered a contributor).
         </p>
         <h3 className="text-center">HOW CAN I PARTICIPATE?</h3>
         <h4>Step 1: Add MetaMask to your browser</h4>
