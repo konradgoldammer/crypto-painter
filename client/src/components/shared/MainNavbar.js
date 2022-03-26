@@ -146,7 +146,7 @@ const MainNavbar = ({
             onClick={enableEth}
             disabled={isConnecting}
           >
-            Connect to Wallet
+            Connect Wallet
           </button>
           {isConnecting && (
             <img

@@ -56,15 +56,15 @@ const About = ({ title, account, setAccount, setToken }) => {
             <h4>Step 2: Connect to MetaMask</h4>
             <p>
               For authentication you need to connect this website to your
-              MetaMask wallet. Click on the blue „Connect to Wallet“ button in
-              the top right corner and you should see a MetaMask window popping
-              up. Proceed by selecting your wallet and connecting it to this
-              website through the MetaMask browser extension. Once you are
-              logged in, you will see your wallet address in the top right
-              corner. If the MetaMask window doesn’t appear, try refreshing the
-              page or manually opening MetaMask from your browser extension
-              panel. If this doesn’t help restart your browser and make sure you
-              installed MetaMask correctly.
+              MetaMask wallet. Click on the blue „Connect Wallet“ button in the
+              top right corner and you should see a MetaMask window popping up.
+              Proceed by selecting your wallet and connecting it to this website
+              through the MetaMask browser extension. Once you are logged in,
+              you will see your wallet address in the top right corner. If the
+              MetaMask window doesn’t appear, try refreshing the page or
+              manually opening MetaMask from your browser extension panel. If
+              this doesn’t help restart your browser and make sure you installed
+              MetaMask correctly.
             </p>
             <h4>Step 3: Start Drawing</h4>
             <p>
