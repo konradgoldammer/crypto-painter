@@ -10,9 +10,14 @@ const Alert = ({ content, showAlert, setShowAlert, setAlert }) => {
         setShowAlert(false);
         setAlert(null);
       }}
+      className="text-light"
+      style={{ width: "420px" }}
+      centered={true}
     >
-      <ModalHeader>Alert</ModalHeader>
-      <ModalBody className="alas">{content}</ModalBody>
+      <ModalHeader className="bg-secondary rounded-top">Alert</ModalHeader>
+      <ModalBody className="alas bg-secondary rounded-bottom">
+        {content}
+      </ModalBody>
     </Modal>
   );
 };

@@ -209,7 +209,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     let alertMsg;
 
     if (!account) {
-      alertMsg = "You need to connect your wallet before you can draw 🤬";
+      alertMsg = "You need to connect your wallet before you can draw";
       setAlert(alertMsg);
       setShowAlert(true);
       return;
