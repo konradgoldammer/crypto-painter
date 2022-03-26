@@ -23,6 +23,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const [lineColor, setLineColor] = useState("#000000"); // black
   const [currentStroke, setCurrentStroke] = useState(null);
   const [queuedStrokes, setQueuedStrokes] = useState([]);
+  const [nextTokenId, setNextTokenId] = useState(0);
 
   useEffect(() => {
     // Set page title
@@ -31,10 +32,11 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
 
   useEffect(() => {
     // Get image obj
-    socket.emit("image", (image) => {
+    socket.emit("image", (image, nextTokenId) => {
       console.log("Loading image...");
       image.strokes.forEach((stroke) => drawStroke(stroke));
       setIsUpdatingCanvas(false);
+      setNextTokenId(nextTokenId);
     });
 
     // Wait for reset
@@ -50,6 +52,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
         "Time's up! The Canvas has been reset. The created image has been raffled off as an NFT to a random contributor. 🥳"
       );
       setShowAlert(true);
+      setNextTokenId(nextTokenId + 1);
     });
 
     socket.on("disconnect", () => {
