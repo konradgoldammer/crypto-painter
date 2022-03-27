@@ -273,7 +273,7 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
             canvas is reset and the Crypto-Painting created is gifted as an NFT
             to a random contributor to the painting (anyone who painted at least
             1 stroke is considered a contributor). Connect your wallet to start
-            painting. <br /> So far{" "}
+            painting. So far{" "}
             <span className="text-primary">
               {totalPainters === 1
                 ? `${totalPainters} person`
