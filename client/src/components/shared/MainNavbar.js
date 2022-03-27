@@ -120,22 +120,16 @@ const MainNavbar = ({
         >
           About
         </Link>
-        <Link
+        <a
           className={`p-2 text-decoration-none ${
             window.location.pathname === "/gallery"
               ? "text-muted link-disabled"
               : "text-light hover-underline"
           }`}
-          to="#"
-          onClick={() => {
-            setAlert(
-              "Gallery is coming soon... 🤗. Follow @crypt0painter on Twitter for updates."
-            );
-            setShowAlert(true);
-          }}
+          href="https://twitter.com/crypt0painter/"
         >
           Gallery
-        </Link>
+        </a>
       </div>
       {account ? (
         <NavbarText className="text-secondary">{account}</NavbarText>
