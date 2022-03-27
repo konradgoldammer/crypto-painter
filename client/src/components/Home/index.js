@@ -50,21 +50,22 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
     // Wait for reset
     socket.on("reset", () => {
       console.log("RESET!");
+      window.location.reload(); // RELOAD ON RESET ONLY TEMPORARY SOLUTION
 
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, 720, 576);
-      ctxRef.current = ctx;
+      // const canvas = canvasRef.current;
+      // const ctx = canvas.getContext("2d");
+      // ctx.clearRect(0, 0, 720, 576);
+      // ctxRef.current = ctx;
 
-      setAlert(
-        "Time's up! The Canvas has been reset. The created image has been raffled off as an NFT to a random contributor. 🥳"
-      );
-      setShowAlert(true);
-      setNextTokenId(nextTokenId + 1);
+      // setAlert(
+      //   "Time's up! The Canvas has been reset. The created image has been raffled off as an NFT to a random contributor. 🥳"
+      // );
+      // setShowAlert(true);
+      // setNextTokenId(nextTokenId + 1);
 
-      let date = new Date();
-      date.setUTCHours(24, 0, 0, 0);
-      setNextResetDate(date.getTime());
+      // let date = new Date();
+      // date.setUTCHours(24, 0, 0, 0);
+      // setNextResetDate(date.getTime());
     });
 
     socket.on("disconnect", () => {
