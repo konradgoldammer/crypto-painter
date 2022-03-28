@@ -130,6 +130,12 @@ const MainNavbar = ({
         >
           Gallery
         </a>
+        <a
+          className="p-2 text-decoration-none text-light hover-underline"
+          href="https://discord.gg/7cbDppXTZN"
+        >
+          Discord
+        </a>
       </div>
       {account ? (
         <NavbarText className="text-secondary">{account}</NavbarText>
