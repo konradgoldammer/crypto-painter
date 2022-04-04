@@ -120,7 +120,17 @@ const MainNavbar = ({
         >
           About
         </Link>
-        <a
+        <Link
+          className={`p-2 text-decoration-none ${
+            window.location.pathname === "/gallery"
+              ? "text-muted link-disabled"
+              : "text-light hover-underline"
+          }`}
+          to="/gallery"
+        >
+          Gallery
+        </Link>
+        {/* <a
           className={`p-2 text-decoration-none ${
             window.location.pathname === "/gallery"
               ? "text-muted link-disabled"
@@ -129,7 +139,7 @@ const MainNavbar = ({
           href="https://twitter.com/crypt0painter/"
         >
           Gallery
-        </a>
+        </a> */}
         <a
           className="p-2 text-decoration-none text-light hover-underline"
           href="https://discord.gg/7cbDppXTZN"

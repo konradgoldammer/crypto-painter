@@ -55,6 +55,18 @@ module.exports = {
       confirmations: 10,
       timeoutBlocks: 200,
     },
+    mumbaiTestnet: {
+      provider: () => {
+        return new HDWalletProvider(
+          privateKey,
+          "https://rpc-mumbai.maticvigil.com"
+        );
+      },
+      network_id: 80001,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
   },
 
   mocha: {

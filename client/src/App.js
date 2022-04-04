@@ -5,6 +5,7 @@ import Home from "./components/Home/index.js";
 import Web3 from "web3";
 import Web3Token from "web3-token";
 import About from "./components/About";
+import Gallery from "./components/Gallery";
 import Mobile from "./components/Mobile";
 import { io } from "socket.io-client";
 import { isMobile } from "react-device-detect";
@@ -127,6 +128,18 @@ const App = () => {
           element={
             <About
               title="About Crypto-Painter"
+              account={account}
+              setAccount={setAccount}
+              setToken={setToken}
+            />
+          }
+        />
+        <Route
+          exact
+          path="/gallery"
+          element={
+            <Gallery
+              title="Crypto-Painter Gallery"
               account={account}
               setAccount={setAccount}
               setToken={setToken}
