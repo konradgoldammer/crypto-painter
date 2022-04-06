@@ -404,23 +404,14 @@ let paintersOnline = 0;
 
       if (image.final) {
         // Reset image
-        image = { strokes: [], painters: [] };
+        image = defaultImage;
 
         io.sockets.emit("reset");
 
         console.log("Image has been reset");
 
         // Reset log
-        log = {
-          totalConnections: 0,
-          totalMobileConnections: 0,
-          painters: [],
-          messengers: [],
-          maxConnections: 0,
-          totalStrokes: 0,
-          totalMessages: 0,
-          totalLogins: 0,
-        };
+        log = defaultLog;
 
         console.log("Log has been reset");
       }
