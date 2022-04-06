@@ -26,7 +26,7 @@ instrument(io, {
 });
 
 const defaultImage = { strokes: [], painters: [] };
-let image = defaultImage;
+let image = { ...defaultImage };
 
 const defaultLog = {
   totalConnections: 0,
@@ -38,7 +38,7 @@ const defaultLog = {
   totalMessages: 0,
   totalLogins: 0,
 };
-let log = defaultLog;
+let log = { ...defaultLog };
 
 let latestNFT = null;
 let latestWinnerHasConnected = false;
@@ -73,7 +73,7 @@ let paintersOnline = 0;
 
     if (latestImage && !latestImage.final) {
       const { strokes, painters } = latestImage.toObject();
-      image = { strokes, painters };
+      image = { strokes: [...strokes], painters: [...painters] };
     }
 
     // Find latest Log in database
@@ -316,15 +316,19 @@ let paintersOnline = 0;
 
         // Create Metadata
         const metadataObject = {
-          name: `Crypto-Painting of ${new Date().toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}`,
+          name: latestNFT
+            ? `Crypto-Painting of ${new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}`
+            : "Initial Crypto-Painting",
           description: `This Crypto-Painting was created collectively by ${
             image.painters.length
-          } cryptopainter.art users from ${
+          } cryptopainter.art ${
+            image.painters.length === 1 ? "user" : "users"
+          } from ${
             latestNFT ? latestNFT.timestamp.toUTCString() : "X"
           } until ${new Date().toUTCString()}.`,
           image: urlImage,
@@ -379,10 +383,13 @@ let paintersOnline = 0;
           winner,
           tokenId: Web3.utils.hexToNumber(receipt.logs[0].topics[3]),
           transaction: receipt.transactionHash,
+          timestamp: Date.now(),
         };
 
         await new NFT(latestNFT).save();
       }
+
+      console.log("image.strokes.length", image.strokes.length);
 
       // Add image to database even if not final
       await new Image(image).save();
@@ -404,16 +411,25 @@ let paintersOnline = 0;
 
       if (image.final) {
         // Reset image
-        image = defaultImage;
-
-        io.sockets.emit("reset");
+        image = { strokes: [], painters: [] };
 
         console.log("Image has been reset");
 
         // Reset log
-        log = defaultLog;
+        log = {
+          totalConnections: 0,
+          totalMobileConnections: 0,
+          painters: [],
+          messengers: [],
+          maxConnections: 0,
+          totalStrokes: 0,
+          totalMessages: 0,
+          totalLogins: 0,
+        };
 
         console.log("Log has been reset");
+
+        io.sockets.emit("reset");
       }
     }, config.get("saveInterval"));
   } catch (error) {
