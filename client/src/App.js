@@ -134,7 +134,7 @@ const App = () => {
             />
           }
         />
-        <Route
+        {/* <Route
           exact
           path="/gallery"
           element={
@@ -145,7 +145,7 @@ const App = () => {
               setToken={setToken}
             />
           }
-        />
+        /> */}
         <Route path="*" element={<h1 className="text-light m-2">404</h1>} />
       </Routes>
     </Router>

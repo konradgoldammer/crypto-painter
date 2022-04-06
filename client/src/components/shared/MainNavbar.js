@@ -120,7 +120,7 @@ const MainNavbar = ({
         >
           About
         </Link>
-        <Link
+        {/* <Link
           className={`p-2 text-decoration-none ${
             window.location.pathname === "/gallery"
               ? "text-muted link-disabled"
@@ -129,7 +129,7 @@ const MainNavbar = ({
           to="/gallery"
         >
           Gallery
-        </Link>
+        </Link> */}
         {/* <a
           className={`p-2 text-decoration-none ${
             window.location.pathname === "/gallery"
@@ -145,6 +145,12 @@ const MainNavbar = ({
           href="https://discord.gg/7cbDppXTZN"
         >
           Discord
+        </a>
+        <a
+          className="p-2 text-decoration-none text-light hover-underline"
+          href="https://testnets.opensea.io/collection/crypto-painter-v2"
+        >
+          OpenSea
         </a>
       </div>
       {account ? (
