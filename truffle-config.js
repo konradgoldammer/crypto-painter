@@ -71,6 +71,7 @@ module.exports = {
           `https://rpc-mainnet.maticvigil.com/v1/8fb4e7e0c13fe8878f9b13c6f91154827ba88e26`
         ),
       network_id: 137,
+      gasPrice: 250000000000,
       confirmations: 2,
       timeoutBlocks: 200,
     },
