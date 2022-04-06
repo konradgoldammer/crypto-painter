@@ -193,8 +193,13 @@ input[type="color"]::-webkit-color-swatch {
   width: 986px;
 }
 
-.text-binance {
-  color: #f0b90b;
+.bg-polygon {
+  background-color: #8247e5;
+}
+
+.logo-polygon {
+  width: 1rem;
+  filter: brightness(0) invert(1);
 }
 
 .blockchain-info {

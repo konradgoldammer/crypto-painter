@@ -1,5 +1,5 @@
-const CryptoPainting = artifacts.require("CryptoPainting");
+const CryptoPainter = artifacts.require("CryptoPainter");
 
 module.exports = function (deployer) {
-  deployer.deploy(CryptoPainting);
+  deployer.deploy(CryptoPainter);
 };

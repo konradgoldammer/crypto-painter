@@ -4,14 +4,14 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract CryptoPainting is ERC721 {
+contract CryptoPainter is ERC721 {
   address public admin;
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
   mapping(string => uint8) hashes;
   mapping (uint256 => string) private _tokenURIs;
 
-  constructor() ERC721("CryptoPainting", "CPA") {
+  constructor() ERC721("Crypto-Painter", "CPA") {
     admin = msg.sender;
   }
 
@@ -34,7 +34,7 @@ contract CryptoPainting is ERC721 {
     _;
   }
 
-  function awardItem(address recipient, string memory hash, string memory metadata) public onlyAdmin returns (uint256) {
+  function mint(address recipient, string memory hash, string memory metadata) public onlyAdmin returns (uint256) {
     require(hashes[hash] != 1);
     hashes[hash] = 1;
     _tokenIds.increment();

@@ -8,8 +8,8 @@ import loading from "../../assets/loading.gif";
 import Menu from "./Menu";
 import Web3Token from "web3-token";
 import { signStatement } from "../../constants";
-import { SiBinance } from "react-icons/si";
 import Countdown from "react-countdown";
+import polygonLogo from "../../assets/polygon.png";
 
 const Home = ({ title, account, setAccount, token, setToken, socket }) => {
   const canvasRef = useRef(null);
@@ -346,16 +346,19 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
               <p className="m-0 blockchain-info bg-secondary rounded-bottom p-1 text-light position-relative">
                 Contract{" "}
                 <a
-                  href="https://bscscan.com/address/0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca/"
+                  href="https://mumbai.polygonscan.com/address/0xca7ccb20ae99de333055820d434c3f399e151afd"
                   className="text-decoration-none hover-underline text-light"
                 >
-                  0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca
+                  0xca7ccb20ae99de333055820d434c3f399e151afd
                 </a>{" "}
-                on{" "}
-                <strong className="text-binance">
-                  BINANCE SMART CHAIN{" "}
-                  <SiBinance className="blockchain-icon ms-1" />
-                </strong>
+                powered by
+                <a
+                  href="https://polygon.technology/"
+                  className="text-decoration-none text-light bg-polygon px-2 rounded border-light border border-1 ms-2 blockchain-icon hover-underline"
+                >
+                  <img src={polygonLogo} alt="" className="logo-polygon mb-1" />
+                  <strong className="ms-1">POLYGON</strong>
+                </a>
               </p>
             </div>
             <Chat

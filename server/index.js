@@ -3,7 +3,7 @@ const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
 const mongoose = require("mongoose");
-const CryptoPainting = require("./contracts/CryptoPainting.json");
+const CryptoPainter = require("./contracts/CryptoPainter.json");
 const Web3 = require("web3");
 const Web3Token = require("web3-token");
 const { setIntervalAsync } = require("set-interval-async/dynamic");
@@ -48,11 +48,13 @@ let paintersOnline = 0;
 (async () => {
   try {
     // Configure Web3
-    const web3 = new Web3("https://bsc-dataseed.binance.org/");
+    const web3 = new Web3(
+      "https://rpc-mumbai.maticvigil.com/v1/8fb4e7e0c13fe8878f9b13c6f91154827ba88e26"
+    );
     const networkId = await web3.eth.net.getId();
-    const cryptoPainting = new web3.eth.Contract(
-      CryptoPainting.abi,
-      CryptoPainting.networks[networkId].address
+    const cryptoPainter = new web3.eth.Contract(
+      CryptoPainter.abi,
+      CryptoPainter.networks[networkId].address
     );
 
     // Configure Web3Storage
@@ -348,11 +350,7 @@ let paintersOnline = 0;
         console.log(`Determined the winner: ${winner}`);
 
         // Mint NFT
-        const tx = cryptoPainting.methods.awardItem(
-          winner,
-          cidImage,
-          urlMetadata
-        );
+        const tx = cryptoPainter.methods.mint(winner, cidImage, urlMetadata);
         const gas = await tx.estimateGas({ from: address });
         const gasPrice = await web3.eth.getGasPrice();
         const data = tx.encodeABI();
@@ -360,7 +358,7 @@ let paintersOnline = 0;
 
         const signedTx = await web3.eth.accounts.signTransaction(
           {
-            to: cryptoPainting.options.address,
+            to: cryptoPainter.options.address,
             data,
             gas,
             gasPrice,

@@ -17,11 +17,10 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(privateKey, config.get("infuraUrlRinkeby"));
       },
-      network_id: 4, // Rinkeby's id
+      network_id: 4,
       gas: 5500000,
-      confirmations: 2, // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+      confirmations: 2,
+      timeoutBlocks: 200,
     },
     mainnet: {
       provider: () => {
@@ -55,17 +54,15 @@ module.exports = {
       confirmations: 10,
       timeoutBlocks: 200,
     },
-    mumbaiTestnet: {
-      provider: () => {
-        return new HDWalletProvider(
+    mumbai: {
+      provider: () =>
+        new HDWalletProvider(
           privateKey,
-          "https://rpc-mumbai.maticvigil.com"
-        );
-      },
+          `https://rpc-mumbai.maticvigil.com/v1/8fb4e7e0c13fe8878f9b13c6f91154827ba88e26`
+        ),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
-      skipDryRun: true,
     },
   },
 

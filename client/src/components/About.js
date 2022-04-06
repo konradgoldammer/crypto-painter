@@ -95,21 +95,21 @@ const About = ({ title, account, setAccount, setToken }) => {
               >
                 @crypt0painter
               </a>{" "}
-              where the crypto paintings are posted and the winners announced.
+              where the Crypto-Paintings are posted and the winners announced.
             </p>
             <h3 className="text-center">HOW CAN I SEE MY NFT IN METAMASK?</h3>
-            <h4>Step 1: Add BSC to MetaMask</h4>
+            <h4>Step 1: Add Polygon to MetaMask</h4>
             <p>
-              Crypto-Painter is built on the Binance Smart Chain (BSC), but
-              Ethereum is MetaMask's default network. Therefore, you need to add
-              BSC as a network to MetaMask. I recommend reading this article{" "}
+              Crypto-Painter is built on the Polygon blockchain, but Ethereum is
+              MetaMask's default network. Therefore, you need to add Polygon as
+              a network to MetaMask. I recommend reading this article{" "}
               <a
-                href="https://academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain"
+                href="https://docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/"
                 className="text-light"
               >
-                www.academy.binance.com/en/articles/connecting-metamask-to-binance-smart-chain
+                www.docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/
               </a>{" "}
-              for details. All in all, connecting MetaMask to BSC is a fairly
+              for details. All in all, adding Polygon to MetaMask is a fairly
               simple process that shouldn't take much more than 5 minutes.
             </p>
             <h4>Step 2: Import token to MetaMask</h4>
@@ -118,12 +118,12 @@ const About = ({ title, account, setAccount, setToken }) => {
               will ask you for 3 things: "Token Contract Address", "Token
               Symbol" and "Token Decimal". Enter{" "}
               <span className="text-primary">
-                0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca
+                0xca7ccb20ae99de333055820d434c3f399e151afd
               </span>{" "}
               for the token contract address,{" "}
               <span className="text-primary">CPA</span> for the token symbol,
-              and 0 for the token decimal. Now CPA (Crypto-Painting) is listed
-              as an asset in MetaMask.
+              and 0 for the token decimal. Now CPA (Crypto-Painter) is listed as
+              an asset in MetaMask.
             </p>
             <h4>Step 3: Import NFT to MetaMask</h4>
             <p>
@@ -136,7 +136,7 @@ const About = ({ title, account, setAccount, setToken }) => {
               2 things: "Address" (address of the NFT contract) and "ID" (token
               ID of the NFT you want to add). Enter{" "}
               <span className="text-primary">
-                0x0563a5E30Bd676CafD40430B42C2cd749D8140Ca
+                0xca7ccb20ae99de333055820d434c3f399e151afd
               </span>{" "}
               for the address and the token ID of an arbitrary Crypto-Painting
               that you own for the ID. The token ID is included in the alert you
