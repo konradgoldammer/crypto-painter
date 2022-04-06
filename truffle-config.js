@@ -64,6 +64,16 @@ module.exports = {
       confirmations: 2,
       timeoutBlocks: 200,
     },
+    polygon: {
+      provider: () =>
+        new HDWalletProvider(
+          privateKey,
+          `https://rpc-mainnet.maticvigil.com/v1/8fb4e7e0c13fe8878f9b13c6f91154827ba88e26`
+        ),
+      network_id: 137,
+      confirmations: 2,
+      timeoutBlocks: 200,
+    },
   },
 
   mocha: {
