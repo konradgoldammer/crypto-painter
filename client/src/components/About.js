@@ -118,7 +118,7 @@ const About = ({ title, account, setAccount, setToken }) => {
               will ask you for 3 things: "Token Contract Address", "Token
               Symbol" and "Token Decimal". Enter{" "}
               <span className="text-primary">
-                0xca7ccb20ae99de333055820d434c3f399e151afd
+                0x2511cBFFC60EE51D7226922fEd5630CE970ec8cB
               </span>{" "}
               for the token contract address,{" "}
               <span className="text-primary">CPA</span> for the token symbol,
@@ -136,7 +136,7 @@ const About = ({ title, account, setAccount, setToken }) => {
               2 things: "Address" (address of the NFT contract) and "ID" (token
               ID of the NFT you want to add). Enter{" "}
               <span className="text-primary">
-                0xca7ccb20ae99de333055820d434c3f399e151afd
+                0x2511cBFFC60EE51D7226922fEd5630CE970ec8cB
               </span>{" "}
               for the address and the token ID of an arbitrary Crypto-Painting
               that you own for the ID. The token ID is included in the alert you

@@ -346,10 +346,10 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
               <p className="m-0 blockchain-info bg-secondary rounded-bottom p-1 text-light position-relative">
                 Contract{" "}
                 <a
-                  href="https://mumbai.polygonscan.com/address/0xca7ccb20ae99de333055820d434c3f399e151afd"
+                  href="https://polygonscan.com/address/0x2511cBFFC60EE51D7226922fEd5630CE970ec8cB"
                   className="text-decoration-none hover-underline text-light"
                 >
-                  0xca7ccb20ae99de333055820d434c3f399e151afd
+                  0x2511cBFFC60EE51D7226922fEd5630CE970ec8cB
                 </a>{" "}
                 powered by
                 <a
