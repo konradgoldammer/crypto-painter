@@ -427,6 +427,10 @@ const getDataURL = (image) => {
   const canvas = createCanvas(720, 576);
   const ctx = canvas.getContext("2d");
 
+  // White bg
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 720, 576);
+
   // Configure general style
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
