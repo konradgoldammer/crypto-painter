@@ -281,8 +281,8 @@ const Home = ({ title, account, setAccount, token, setToken, socket }) => {
                 : `${totalPainters} people`}
             </span>{" "}
             {totalPainters === 1 ? "has" : "have"} contributed painting{" "}
-            <span className="text-primary">CryptoPainting #{nextTokenId}</span>.
-            The canvas will reset and the painting will be gifted in{" "}
+            <span className="text-primary">Crypto-Painting #{nextTokenId}</span>
+            . The canvas will reset and the painting will be gifted in{" "}
             {
               <Countdown
                 date={nextResetDate}
