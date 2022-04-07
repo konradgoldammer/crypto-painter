@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "heroku-postbuild": "npm install --prefix server",
     "client-install": "npm install --prefix client",
     "server-install": "npm install --prefix server",
     "client": " npm start --prefix client",
