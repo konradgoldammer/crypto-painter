@@ -148,7 +148,7 @@ const MainNavbar = ({
         </a>
         <a
           className="p-2 text-decoration-none text-light hover-underline"
-          href="https://testnets.opensea.io/collection/crypto-painter-v2"
+          href="https://opensea.io/collection/crypto-painter-3"
         >
           OpenSea
         </a>
