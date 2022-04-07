@@ -1,4 +1,4 @@
-const { instrument } = require("@socket.io/admin-ui");
+// const { instrument } = require("@socket.io/admin-ui");
 const { createCanvas, loadImage } = require("canvas");
 const config = require("config");
 const fs = require("fs").promises;
@@ -17,13 +17,13 @@ const privateKey = config.get("privateKey");
 const port = process.env.PORT || 5000;
 
 const io = require("socket.io")(port, { cors: { origin: "*" } });
-instrument(io, {
-  auth: {
-    type: "basic",
-    username: "admin",
-    password: config.get("passwordSocketAdmin"),
-  },
-});
+// instrument(io, {
+//   auth: {
+//     type: "basic",
+//     username: "admin",
+//     password: config.get("passwordSocketAdmin"),
+//   },
+// });
 
 const defaultImage = { strokes: [], painters: [] };
 let image = { ...defaultImage };
@@ -48,13 +48,11 @@ let paintersOnline = 0;
 (async () => {
   try {
     // Configure Web3
-    const web3 = new Web3(
-      "https://rpc-mumbai.maticvigil.com/v1/8fb4e7e0c13fe8878f9b13c6f91154827ba88e26"
-    );
+    const web3 = new Web3("https://polygon-rpc.com");
     const networkId = await web3.eth.net.getId();
     const cryptoPainter = new web3.eth.Contract(
       CryptoPainter.abi,
-      CryptoPainter.networks[networkId].address
+      config.get("contractAddress")
     );
 
     // Configure Web3Storage
