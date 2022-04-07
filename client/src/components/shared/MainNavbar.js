@@ -136,7 +136,7 @@ const MainNavbar = ({
               ? "text-muted link-disabled"
               : "text-light hover-underline"
           }`}
-          href="https://twitter.com/crypt0painter/"
+          href="https://twitter.com/0xCryptoPainter/"
         >
           Gallery
         </a> */}

@@ -90,10 +90,10 @@ const About = ({ title, account, setAccount, setToken }) => {
               it). If for whatever reason you don't receive this alert, you can
               always go to our Twitter{" "}
               <a
-                href="https://twitter.com/crypt0painter"
+                href="https://twitter.com/0xCryptoPainter"
                 className="text-light"
               >
-                @crypt0painter
+                @0xCryptoPainter
               </a>{" "}
               where the Crypto-Paintings are posted and the winners announced.
             </p>
@@ -143,10 +143,10 @@ const About = ({ title, account, setAccount, setToken }) => {
               receive when you win a Crypto-Painting. Alternatively, you can
               look up the token ID for each Crypto-Painting at{" "}
               <a
-                href="https://twitter.com/crypt0painter"
+                href="https://twitter.com/0xCryptoPainter"
                 className="text-light"
               >
-                @crypt0painter
+                @0xCryptoPainter
               </a>{" "}
               on Twitter.
             </p>
