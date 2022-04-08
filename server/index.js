@@ -381,7 +381,7 @@ let paintersOnline = 0;
           winner,
           tokenId: Web3.utils.hexToNumber(receipt.logs[0].topics[3]),
           transaction: receipt.transactionHash,
-          timestamp: Date.now(),
+          timestamp: new Date(),
         };
 
         await new NFT(latestNFT).save();
