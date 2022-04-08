@@ -30,7 +30,7 @@ const Mobile = ({ setRenderDesktop, socket }) => {
         <img src={loading} className="loading mb-3" />
       )}
       <p className="text-start">
-        This content is unavailabe on mobile. Check out @crypt0painter on
+        This content is unavailabe on mobile. Check out @0xCryptoPainter on
         Twitter if want to see the latest NFTs and winners.
       </p>
       <button
