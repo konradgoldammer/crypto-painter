@@ -12,7 +12,7 @@ import { isMobile } from "react-device-detect";
 import { signStatement } from "./constants";
 
 // Establish socket connection through socket.io
-const socket = io("https://crypto-painter.herokuapp.com/"); // Add to dotenv maybe
+const socket = io("https://crypto-painter2.herokuapp.com/"); // Add to dotenv maybe
 
 const App = () => {
   const [account, setAccount] = useState(null);
